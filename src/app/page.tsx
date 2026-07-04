@@ -3,17 +3,19 @@
 import { Aladin } from "next/font/google";
 import Image from "next/image";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
   const [tableInfo, setTableInfo ] = useState<any[]>([]);
+  const router = useRouter();
 
   const handleGetTableId = async () => {
   const res = await fetch("/api/StatsTableId");
-  const tableInfoData = await res.json();
-    console.log(tableInfo);
-    setTableInfo(tableInfoData);
+  // const tableInfoData = await res.json();
+  //   console.log(tableInfo);
+  //   setTableInfo(tableInfoData);
+    // router.pushA('/tableInfo')
   };
 
   const handleGetMetaInfo = async () => {
@@ -39,13 +41,13 @@ export default function Home() {
       <button type="button" onClick={handleGetStats}>
         統計情報取得
       </button>
-    <ul>
+    {/* <ul>
       {tableInfo.map((table) => (
         <li key={table["@id"]}>
-          {table["@id"]}: {table.TITLE.$}
+          {table["@id"]}: {table.TITLE}
         </li>
       ))}
-    </ul>
+    </ul> */}
     </div>
   );
 }
