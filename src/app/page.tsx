@@ -113,20 +113,20 @@ export default async function Home() {
 
         <tbody>
           <tr>
-            <th>合計</th>
-            <th>{displayTradeData.totalQuantity}</th>
-            <th>{displayTradeData.totalAmount}(千円)</th>
+            <td>合計</td>
+            <td>{displayTradeData.totalQuantity}</td>
+            <td>{displayTradeData.totalAmount}(千円)</td>
           </tr>
 
         {months.map((month) => (
           <tr key={month.label}>
-            <th>{month.label}</th>
-            <th>
+            <td>{month.label}</td>
+            <td>
               {displayTradeData[month.quantity]}
-            </th>
-            <th>
+            </td>
+            <td>
               {displayTradeData[month.amount]}(千円)
-            </th>   
+            </td>
           </tr> 
         ))}
         </tbody>
