@@ -1,4 +1,5 @@
-import type { TradeData, DisplayTradeData } from "./types/estat.ts";
+import type { TradeData, DisplayTradeData } from "../types/estat";
+import ExcelDownloadButton from "./components/ExcelDownloadButton";
 import React from "react";
 
 export default async function Home() {
@@ -57,6 +58,7 @@ export default async function Home() {
   };
 
   const months = [
+  { label: "合計", quantity: "totalQuantity", amount: "totalAmount" },
   { label: "1月", quantity: "januaryQuantity", amount: "januaryAmount" },
   { label: "2月", quantity: "februaryQuantity", amount: "februaryAmount" },
   { label: "3月", quantity: "marchQuantity", amount: "marchAmount" },
@@ -90,6 +92,58 @@ export default async function Home() {
     );
   }
 
+  // mothesとconverter、paramsとdisplayTradeDataをtradeData一つにまとめる
+
+  const tradeData: TradeData = {
+    country: {
+        code : 50103,
+        name : "大韓民国",
+    },
+    year: 2020,
+    item: {
+        code : 0o000000,
+        name : "食料品",
+    }
+    results : TradeResult[];
+  };
+
+  // Excelダウンロード用データを作成
+  // monthsの名前を変えてあげればいいのでは？
+// {
+//   totalQuantity: 0,
+//   totalAmount: 31044596,
+//   januaryQuantity: 0,
+//   januaryAmount: 2521380,
+//   februaryQuantity: 0,
+//   februaryAmount: 2205031,
+//   marchQuantity: 0,
+//   marchAmount: 2108631,
+//   aprilQuantity: 0,
+//   aprilAmount: 1947139,
+//   mayQuantity: 0,
+//   mayAmount: 2188860,
+//   juneQuantity: 0,
+//   juneAmount: 2492828,
+//   julyQuantity: 0,
+//   julyAmount: 2607654,
+//   augustQuantity: 0,
+//   augustAmount: 2452859,
+//   septemberQuantity: 0,
+//   septemberAmount: 2398757,
+//   octoberQuantity: 0,
+//   octoberAmount: 3011905,
+//   novemberQuantity: 0,
+//   novemberAmount: 3560516,
+//   decemberQuantity: 0,
+//   decemberAmount: 3549036,
+// }　これを
+  // [{月:label, 数量:totalQuantity, 金額:amout}, {月:"1月"}]に変換してあげたい
+
+  // const excelRows = displayTradeData.map((displayTradeData) => ({
+  //   月: month.label,
+  //   数量: month.quantity,
+  //   金額: month.amount,
+  // })
   
 
   return (
@@ -104,6 +158,7 @@ export default async function Home() {
         年：{tableInfo?.CLASS_INF?.CLASS_OBJ[4]?.CLASS?.["@name"] ?? "未取得"} 
       </p>
 
+      {/* <ExcelDownloadButton rows={excelRows} /> */}
       <table>
         <thead>
           <tr>
@@ -114,11 +169,11 @@ export default async function Home() {
         </thead>
 
         <tbody>
-          <tr>
+          {/* <tr>
             <td>合計</td>
             <td>{displayTradeData.totalQuantity}</td>
             <td>{displayTradeData.totalAmount}(千円)</td>
-          </tr>
+          </tr> */}
 
         {months.map((month) => (
           <tr key={month.label}>
