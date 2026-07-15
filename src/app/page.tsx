@@ -28,7 +28,7 @@ export default async function Home() {
   const fetchedData = values.DATA_INF.VALUE;
 
   // forループで回したいな。必要なデータは januaryAmout:110の対応表だな。
-  const converter: Record<string, string> = {
+  const converter = {
     totalQuantity: "110",
     totalAmount: "120",
     januaryQuantity: "130",
@@ -55,7 +55,7 @@ export default async function Home() {
     novemberAmount: "340",
     decemberQuantity: "350",
     decemberAmount: "360",
-  };
+  } satisfies Record<keyof DisplayTradeData, string>;
 
   const months = [
   { label: "合計", quantity: "totalQuantity", amount: "totalAmount" },
@@ -74,12 +74,43 @@ export default async function Home() {
 ] as const;
 
   // 年合計や各月の合計を格納し、表示するためのデータ定義
-  const displayTradeData: DisplayTradeData = {};
+  const displayTradeData: DisplayTradeData = {
+    totalQuantity: 0,
+    totalAmount: 0,
+    januaryQuantity: 0,
+    januaryAmount: 0,
+    februaryQuantity: 0,
+    februaryAmount: 0,
+    marchQuantity: 0,
+    marchAmount: 0,
+    aprilQuantity: 0,
+    aprilAmount: 0,
+    mayQuantity: 0,
+    mayAmount: 0,
+    juneQuantity: 0,
+    juneAmount: 0,
+    julyQuantity: 0,
+    julyAmount: 0,
+    augustQuantity: 0,
+    augustAmount: 0,
+    septemberQuantity: 0,
+    septemberAmount: 0,
+    octoberQuantity: 0,
+    octoberAmount: 0,
+    novemberQuantity: 0,
+    novemberAmount: 0,
+    decemberQuantity: 0,
+    decemberAmount: 0,
+  };
 
-  for (const [propertyName, cat02code] of Object.entries(converter)) {
+  for (
+    const [propertyName, cat02code] of Object.entries(converter) as [
+    keyof DisplayTradeData,
+    string,
+  ][]
+  ) {
     displayTradeData[propertyName] = fetchedData
-    .filter(
-      (value) => 
+    .filter((value) => 
         // value["@cat01"] === itemCode &&
         value["@cat02"] === cat02code
         // value["@cat03"] === customCode &&
@@ -94,58 +125,28 @@ export default async function Home() {
 
   // mothesとconverter、paramsとdisplayTradeDataをtradeData一つにまとめる
 
-  const tradeData: TradeData = {
-    country: {
-        code : 50103,
-        name : "大韓民国",
-    },
-    year: 2020,
-    item: {
-        code : 0o000000,
-        name : "食料品",
-    }
-    results : TradeResult[];
-  };
+  // const tradeData: TradeData = {
+  //   country: {
+  //       code : 50103,
+  //       name : "大韓民国",
+  //   },
+  //   year: 2020,
+  //   item: {
+  //       code : 0o000000,
+  //       name : "食料品",
+  //   }
+  //   results : TradeResult[];
+  // };
 
   // Excelダウンロード用データを作成
-  // monthsの名前を変えてあげればいいのでは？
-// {
-//   totalQuantity: 0,
-//   totalAmount: 31044596,
-//   januaryQuantity: 0,
-//   januaryAmount: 2521380,
-//   februaryQuantity: 0,
-//   februaryAmount: 2205031,
-//   marchQuantity: 0,
-//   marchAmount: 2108631,
-//   aprilQuantity: 0,
-//   aprilAmount: 1947139,
-//   mayQuantity: 0,
-//   mayAmount: 2188860,
-//   juneQuantity: 0,
-//   juneAmount: 2492828,
-//   julyQuantity: 0,
-//   julyAmount: 2607654,
-//   augustQuantity: 0,
-//   augustAmount: 2452859,
-//   septemberQuantity: 0,
-//   septemberAmount: 2398757,
-//   octoberQuantity: 0,
-//   octoberAmount: 3011905,
-//   novemberQuantity: 0,
-//   novemberAmount: 3560516,
-//   decemberQuantity: 0,
-//   decemberAmount: 3549036,
-// }　これを
-  // [{月:label, 数量:totalQuantity, 金額:amout}, {月:"1月"}]に変換してあげたい
+  const excelData = months.map((month) => ({
+    月: month.label,
+    数量: displayTradeData[month.quantity],
+    金額: displayTradeData[month.amount],
+  }));
 
-  // const excelRows = displayTradeData.map((displayTradeData) => ({
-  //   月: month.label,
-  //   数量: month.quantity,
-  //   金額: month.amount,
-  // })
+  console.log("excelData", excelData);
   
-
   return (
     <div>
       <p>
@@ -158,7 +159,6 @@ export default async function Home() {
         年：{tableInfo?.CLASS_INF?.CLASS_OBJ[4]?.CLASS?.["@name"] ?? "未取得"} 
       </p>
 
-      {/* <ExcelDownloadButton rows={excelRows} /> */}
       <table>
         <thead>
           <tr>
@@ -188,6 +188,9 @@ export default async function Home() {
         ))}
         </tbody>
       </table>
+
+      {/* エクセルダウンロードボタン */}
+      <ExcelDownloadButton rows={excelData} />
     </div>
   );
 }
