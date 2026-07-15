@@ -1,4 +1,5 @@
-import type { TradeData, DisplayTradeData } from "./types/estat.ts";
+import type { TradeData, DisplayTradeData } from "../types/estat";
+import ExcelDownloadButton from "./components/ExcelDownloadButton";
 import React from "react";
 
 export default async function Home() {
@@ -27,7 +28,7 @@ export default async function Home() {
   const fetchedData = values.DATA_INF.VALUE;
 
   // forループで回したいな。必要なデータは januaryAmout:110の対応表だな。
-  const converter: Record<string, string> = {
+  const converter = {
     totalQuantity: "110",
     totalAmount: "120",
     januaryQuantity: "130",
@@ -54,9 +55,10 @@ export default async function Home() {
     novemberAmount: "340",
     decemberQuantity: "350",
     decemberAmount: "360",
-  };
+  } satisfies Record<keyof DisplayTradeData, string>;
 
   const months = [
+  { label: "合計", quantity: "totalQuantity", amount: "totalAmount" },
   { label: "1月", quantity: "januaryQuantity", amount: "januaryAmount" },
   { label: "2月", quantity: "februaryQuantity", amount: "februaryAmount" },
   { label: "3月", quantity: "marchQuantity", amount: "marchAmount" },
@@ -72,12 +74,43 @@ export default async function Home() {
 ] as const;
 
   // 年合計や各月の合計を格納し、表示するためのデータ定義
-  const displayTradeData: DisplayTradeData = {};
+  const displayTradeData: DisplayTradeData = {
+    totalQuantity: 0,
+    totalAmount: 0,
+    januaryQuantity: 0,
+    januaryAmount: 0,
+    februaryQuantity: 0,
+    februaryAmount: 0,
+    marchQuantity: 0,
+    marchAmount: 0,
+    aprilQuantity: 0,
+    aprilAmount: 0,
+    mayQuantity: 0,
+    mayAmount: 0,
+    juneQuantity: 0,
+    juneAmount: 0,
+    julyQuantity: 0,
+    julyAmount: 0,
+    augustQuantity: 0,
+    augustAmount: 0,
+    septemberQuantity: 0,
+    septemberAmount: 0,
+    octoberQuantity: 0,
+    octoberAmount: 0,
+    novemberQuantity: 0,
+    novemberAmount: 0,
+    decemberQuantity: 0,
+    decemberAmount: 0,
+  };
 
-  for (const [propertyName, cat02code] of Object.entries(converter)) {
+  for (
+    const [propertyName, cat02code] of Object.entries(converter) as [
+    keyof DisplayTradeData,
+    string,
+  ][]
+  ) {
     displayTradeData[propertyName] = fetchedData
-    .filter(
-      (value) => 
+    .filter((value) => 
         // value["@cat01"] === itemCode &&
         value["@cat02"] === cat02code
         // value["@cat03"] === customCode &&
@@ -90,6 +123,30 @@ export default async function Home() {
     );
   }
 
+  // mothesとconverter、paramsとdisplayTradeDataをtradeData一つにまとめる
+
+  // const tradeData: TradeData = {
+  //   country: {
+  //       code : 50103,
+  //       name : "大韓民国",
+  //   },
+  //   year: 2020,
+  //   item: {
+  //       code : 0o000000,
+  //       name : "食料品",
+  //   }
+  //   results : TradeResult[];
+  // };
+
+  // Excelダウンロード用データを作成
+  const excelData = months.map((month) => ({
+    月: month.label,
+    数量: displayTradeData[month.quantity],
+    金額: displayTradeData[month.amount],
+  }));
+
+  console.log("excelData", excelData);
+  
   return (
     <div>
       <p>
@@ -112,11 +169,11 @@ export default async function Home() {
         </thead>
 
         <tbody>
-          <tr>
+          {/* <tr>
             <td>合計</td>
             <td>{displayTradeData.totalQuantity}</td>
             <td>{displayTradeData.totalAmount}(千円)</td>
-          </tr>
+          </tr> */}
 
         {months.map((month) => (
           <tr key={month.label}>
@@ -131,6 +188,9 @@ export default async function Home() {
         ))}
         </tbody>
       </table>
+
+      {/* エクセルダウンロードボタン */}
+      <ExcelDownloadButton rows={excelData} />
     </div>
   );
 }
