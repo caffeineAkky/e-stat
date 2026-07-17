@@ -1,8 +1,15 @@
-import type { TradeData, DisplayTradeData } from "../types/estat";
+import type { TradeData, DisplayTradeData, SearchParams } from "../types/estat";
 import ExcelDownloadButton from "./components/ExcelDownloadButton";
 import React from "react";
+import Form from "next/form";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParams) {
+  const { area: rawArea } = await searchParams;
+
+  const area = 
+    typeof rawArea === "string" && /^\d{5}$/.test(rawArea)
+      ? rawArea
+      : "50103";
 
   const APP_ID = process.env.ESTAT_APP_ID!;
 
@@ -10,7 +17,7 @@ export default async function Home() {
     appId: APP_ID,
     statsDataId: "0003334002",   // 統計表ID
     cdCat01: "00000000",         // 品目コード
-    cdArea: "50103",             // 例: 50103: 大韓民国
+    cdArea: area,                // 例: 50103: 大韓民国
     cdTime: "2020000000",          // 例: 2020000000
     // limit: "",
   });
@@ -18,6 +25,7 @@ export default async function Home() {
   const res = await fetch(
     `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`
   );
+
   const json = await res.json();
 
   const values = json.GET_STATS_DATA.STATISTICAL_DATA;
@@ -25,7 +33,11 @@ export default async function Home() {
 
   const tableInfo = values;
 
-  const fetchedData = values.DATA_INF.VALUE;
+  const fetchedData = values.DATA_INF?.VALUE ?? [];
+
+  if (fetchedData.length === 0) {
+    console.log("指定した条件に一致するデータがありません");
+  }
 
   // forループで回したいな。必要なデータは januaryAmout:110の対応表だな。
   const converter = {
@@ -149,6 +161,19 @@ export default async function Home() {
   
   return (
     <div>
+    {/* 画面上部に条件検索ができるようにすればいいかも。 */}
+    <main>
+      <Form action="">
+        <label>
+          国・地域
+          <select name="area" defaultValue={area}>
+            <option value = "50103">大韓民国</option>
+            <option value = "10500">中華人民共和国</option>
+          </select>
+        </label>
+
+        <button type = "submit">検索</button>
+      </Form>
       <p>
         品目：{tableInfo?.CLASS_INF?.CLASS_OBJ[0]?.CLASS?.["@name"] ?? "未取得"}
       </p>
@@ -191,6 +216,7 @@ export default async function Home() {
 
       {/* エクセルダウンロードボタン */}
       <ExcelDownloadButton rows={excelData} />
+    </main>
     </div>
   );
 }
