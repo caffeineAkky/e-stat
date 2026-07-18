@@ -4,19 +4,24 @@ import React from "react";
 import Form from "next/form";
 
 export default async function Home({ searchParams }: SearchParams) {
-  const { area: rawArea } = await searchParams;
+  const { area: rawArea, item: rawItem } = await searchParams;
 
   const area = 
     typeof rawArea === "string" && /^\d{5}$/.test(rawArea)
       ? rawArea
       : "50103";
 
+  const item = 
+    typeof rawItem === "string" && /^\d{8}$/.test(rawItem)
+      ? rawItem
+      : "00000000";
+
   const APP_ID = process.env.ESTAT_APP_ID!;
 
   const params = new URLSearchParams({
     appId: APP_ID,
     statsDataId: "0003334002",   // 統計表ID
-    cdCat01: "00000000",         // 品目コード
+    cdCat01: item,               // 品目コード
     cdArea: area,                // 例: 50103: 大韓民国
     cdTime: "2020000000",          // 例: 2020000000
     // limit: "",
@@ -158,22 +163,102 @@ export default async function Home({ searchParams }: SearchParams) {
   }));
 
   console.log("excelData", excelData);
-  
+
+  const testparams = new URLSearchParams({
+    appId: APP_ID,
+    statsDataId: "0003334002",   // 統計表ID
+    // cdArea: "13000",             // 例: 東京都
+    // limit: "100",
+  });
+
+  const testres = await fetch(
+    `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${testparams}`
+  );
+  const testjson = await testres.json();
+
+  // 実データは VALUE 配列に入っている
+  const testvalues = testjson.GET_STATS_DATA.STATISTICAL_DATA.DATA_INF.VALUE;
+
+  // 検索用国コードを取得
+  const countryCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[3].CLASS;
+  console.log(testvalues);
+  console.log(countryCodes);
+
+    // 検索用品目コードを取得
+  const itemCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[0].CLASS;
+  console.log(itemCodes);
+
+  // const getTableIdParams = new URLSearchParams({
+  //   appId: APP_ID,
+  //   searchKind: "1",   // 統計表ID
+  //   // searchWord: "%輸出%",
+  //   statsCode: "00350300",
+  //   searchWord: "概況品別国別表 輸出",
+  //   // surveyYears: "202010",
+  //   // limit: "1000",
+  // });
+  // const tableIdRes = await fetch(
+  //   `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList?${getTableIdParams}`
+  // );
+  // const tableIdJson = await tableIdRes.json();
+  // // const tableIdValues = tableIdJson.GET_STATS_DATA.STATISTICAL_DATA.DATA_INF.VALUE;
+  // const tableIdInfos = tableIdJson.GET_STATS_LIST.DATALIST_INF.TABLE_INF;
+
+  // console.log(tableIdInfos);
+
   return (
     <div>
     {/* 画面上部に条件検索ができるようにすればいいかも。 */}
     <main>
-      <Form action="">
+      {/* <Form action="">
         <label>
           国・地域
           <select name="area" defaultValue={area}>
             <option value = "50103">大韓民国</option>
             <option value = "10500">中華人民共和国</option>
-          </select>
+          </select> */}
+      {/* <label>
+        統計表名
+      </label>
+
+      <select name="area" defaultValue={area}>
+        {countryCodes.map((countryCode) => (
+          <option  key={countryCode["@code"]} value={countryCode["@code"]}>
+            {countryCode["@name"]}
+          </option>
+        ))}
+      </select> */}
+      
+
+      <Form action="">
+        <label>
+          国・地域
         </label>
 
+        <select name="area" defaultValue={area}>
+          {countryCodes.map((countryCode) => (
+            <option  key={countryCode["@code"]} value={countryCode["@code"]}>
+              {countryCode["@name"]}
+            </option>
+          ))}
+        </select>
+
+        <label>
+          品目
+        </label>
+
+        <select name="item" defaultValue={item}>
+          {itemCodes.map((itemCode) => (
+            <option  key={itemCode["@code"]} value={itemCode["@code"]}>
+              {itemCode["@name"]}
+            </option>
+          ))}
+        </select>
+
         <button type = "submit">検索</button>
+
       </Form>
+
       <p>
         品目：{tableInfo?.CLASS_INF?.CLASS_OBJ[0]?.CLASS?.["@name"] ?? "未取得"}
       </p>
@@ -207,7 +292,7 @@ export default async function Home({ searchParams }: SearchParams) {
               {displayTradeData[month.quantity]}
             </td>
             <td>
-              {displayTradeData[month.amount]}(千円)
+              {displayTradeData[month.amount]}
             </td>
           </tr> 
         ))}
