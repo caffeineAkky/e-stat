@@ -55,3 +55,9 @@ type ExcelRow = {
 export type ExcelDownloadButtonProps = {
     rows: ExcelRow[];
 };
+
+export type SearchParams = {
+    searchParams: Promise<{
+        area?: string | string[];
+    }>;
+};
