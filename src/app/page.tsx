@@ -108,6 +108,7 @@ export default async function Home() {
     keyof DisplayTradeData,
     string,
   ][]
+  
   ) {
     displayTradeData[propertyName] = fetchedData
     .filter((value) => 
