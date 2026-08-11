@@ -1,10 +1,18 @@
-import type { TradeData, DisplayTradeData, SearchParams } from "../types/estat";
-import ExcelDownloadButton from "./components/ExcelDownloadButton";
+import type { TradeData, DisplayTradeData, SearchParams } from "@/types/estat";
+import type { SearchConditions, SearchFormOptions } from "@/types/search";
+import ExcelDownloadButton from "@/components/ExcelDownloadButton";
+import SearchForm from "@/components/SearchForm";
 import React from "react";
 import Form from "next/form";
-import { yearOptions, displayTradeData, yearToStatsDataId } from "../lib/estat/definitions/trade";
+import { yearOptions, displayTradeData, yearToStatsDataId } from "@/lib/estat/constants";
+import { getSearchOptions } from "@/lib/estat/getSearchOptions";
+import { parseSearchParams } from "@/lib/estat/parseSearchParams";
 
 export default async function Home({ searchParams }: SearchParams) {
+  const searchConditions:SearchConditions = await parseSearchParams(searchParams);
+  const searchOptions: SearchFormOptions = await getSearchOptions();
+
+
   const { area: rawArea, item: rawItem, year: rawYear } = await searchParams;
 
   const area = 
@@ -26,7 +34,7 @@ export default async function Home({ searchParams }: SearchParams) {
   const statsTableId = yearToStatsDataId[year];
 
   const APP_ID = process.env.ESTAT_APP_ID!;
-  
+
   const params = new URLSearchParams({
     appId: APP_ID,
     statsDataId: statsTableId,   // 統計表ID
@@ -129,77 +137,38 @@ export default async function Home({ searchParams }: SearchParams) {
 
   console.log("excelData", excelData);
 
-  const testparams = new URLSearchParams({
-    appId: APP_ID,
-    statsDataId: "0003334002",   // 統計表ID
-    // cdArea: "13000",             // 例: 東京都
-    // limit: "100",
-  });
-
-  const testres = await fetch(
-    `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${testparams}`
-  );
-  const testjson = await testres.json();
-
-  // 実データは VALUE 配列に入っている
-  const testvalues = testjson.GET_STATS_DATA.STATISTICAL_DATA.DATA_INF.VALUE;
-
-  // 検索用国コードを取得
-  const countryCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[3].CLASS;
-  console.log(testvalues);
-  console.log(countryCodes);
-
-    // 検索用品目コードを取得
-  const itemCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[0].CLASS;
-  console.log(itemCodes);
-
-  // 検索用年を取得
-  const surveyYears = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[4].CLASS;
-  console.log(surveyYears);
-
-
-  // const getTableIdParams = new URLSearchParams({
+  // const testparams = new URLSearchParams({
   //   appId: APP_ID,
-  //   searchKind: "1",   // 統計表ID
-  //   // searchWord: "%輸出%",
-  //   statsCode: "00350300",
-  //   searchWord: "概況品別国別表 輸出",
-  //   // surveyYears: "202010",
-  //   // limit: "1000",
+  //   statsDataId: "0003334002",   // 統計表ID
+  //   // cdArea: "13000",             // 例: 東京都
+  //   // limit: "100",
   // });
-  // const tableIdRes = await fetch(
-  //   `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList?${getTableIdParams}`
-  // );
-  // const tableIdJson = await tableIdRes.json();
-  // // const tableIdValues = tableIdJson.GET_STATS_DATA.STATISTICAL_DATA.DATA_INF.VALUE;
-  // const tableIdInfos = tableIdJson.GET_STATS_LIST.DATALIST_INF.TABLE_INF;
 
-  // console.log(tableIdInfos);
+  // const testres = await fetch(
+  //   `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${testparams}`
+  // );
+  // const testjson = await testres.json();
+
+  // // 実データは VALUE 配列に入っている
+  // const testvalues = testjson.GET_STATS_DATA.STATISTICAL_DATA.DATA_INF.VALUE;
+
+  // // 検索用国コードを取得
+  // const countryCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[3].CLASS;
+  // console.log(testvalues);
+  // console.log(countryCodes);
+
+  //   // 検索用品目コードを取得
+  // const itemCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[0].CLASS;
+  // console.log(itemCodes);
+
+  // // 検索用年を取得
+  // const surveyYears = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[4].CLASS;
+  // console.log(surveyYears);
 
   return (
     <div>
-    {/* 画面上部に条件検索ができるようにすればいいかも。 */}
-    <main>
-      {/* <Form action="">
-        <label>
-          国・地域
-          <select name="area" defaultValue={area}>
-            <option value = "50103">大韓民国</option>
-            <option value = "10500">中華人民共和国</option>
-          </select> */}
-      {/* <label>
-        統計表名
-      </label>
-
-      <select name="area" defaultValue={area}>
-        {countryCodes.map((countryCode) => (
-          <option  key={countryCode["@code"]} value={countryCode["@code"]}>
-            {countryCode["@name"]}
-          </option>
-        ))}
-      </select> */}
-      
-
+      <SearchForm options={searchOptions} conditions={searchConditions}/>
+    {/* <header>
       <Form action="">
         <label>
           国・地域
@@ -236,18 +205,11 @@ export default async function Home({ searchParams }: SearchParams) {
             </option>
           ))}
         </select>
-
-        {/* <select name="year" defaultValue={year}>
-          {surveyYears.map((surveyYear) => (
-            <option  key={surveyYear["@name"]} value={surveyYear["@code"]}>
-              {surveyYear["@name"]}
-            </option>
-          ))}
-        </select> */}
-
         <button type = "submit">検索</button>
 
       </Form>
+    </header> */}
+    <main>
 
       <p>
         品目：{tableInfo?.CLASS_INF?.CLASS_OBJ[0]?.CLASS?.["@name"] ?? "未取得"}
@@ -258,7 +220,6 @@ export default async function Home({ searchParams }: SearchParams) {
       <p>
         年：{tableInfo?.CLASS_INF?.CLASS_OBJ[4]?.CLASS?.["@name"] ?? "未取得"} 
       </p>
-
       <table>
         <thead>
           <tr>
@@ -269,11 +230,6 @@ export default async function Home({ searchParams }: SearchParams) {
         </thead>
 
         <tbody>
-          {/* <tr>
-            <td>合計</td>
-            <td>{displayTradeData.totalQuantity}</td>
-            <td>{displayTradeData.totalAmount}(千円)</td>
-          </tr> */}
 
         {months.map((month) => (
           <tr key={month.label}>
@@ -289,7 +245,6 @@ export default async function Home({ searchParams }: SearchParams) {
         </tbody>
       </table>
 
-      {/* エクセルダウンロードボタン */}
       <ExcelDownloadButton rows={excelData} />
     </main>
     </div>

@@ -50,9 +50,9 @@ export const yearToStatsDataId = {
 };
 
 export const yearOptions = Object.entries(yearToStatsDataId).map(
-    ([year, statsDataId]) => ({
+    ([year, tableId]) => ({
         year: Number(year),
-        statsDataId,
+        tableId,
         yearSearchValue: `${year}000000`,
     })
 )

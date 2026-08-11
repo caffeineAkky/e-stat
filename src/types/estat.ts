@@ -61,6 +61,5 @@ export type SearchParams = {
         area?: string | string[];
         item?: string | string[];
         year?: string | string[];
-
     }>;
 };
