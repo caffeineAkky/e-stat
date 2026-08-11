@@ -2,9 +2,10 @@ import type { TradeData, DisplayTradeData, SearchParams } from "../types/estat";
 import ExcelDownloadButton from "./components/ExcelDownloadButton";
 import React from "react";
 import Form from "next/form";
+import { yearOptions, displayTradeData, yearToStatsDataId } from "../lib/estat/definitions/trade";
 
 export default async function Home({ searchParams }: SearchParams) {
-  const { area: rawArea, item: rawItem } = await searchParams;
+  const { area: rawArea, item: rawItem, year: rawYear } = await searchParams;
 
   const area = 
     typeof rawArea === "string" && /^\d{5}$/.test(rawArea)
@@ -16,14 +17,22 @@ export default async function Home({ searchParams }: SearchParams) {
       ? rawItem
       : "00000000";
 
-  const APP_ID = process.env.ESTAT_APP_ID!;
+  const searchYear = 
+    typeof rawYear === "string" && /^\d{10}$/.test(rawYear)
+      ? rawYear
+      : "202000000";
 
+  const year = Number(searchYear.slice(0, 4));
+  const statsTableId = yearToStatsDataId[year];
+
+  const APP_ID = process.env.ESTAT_APP_ID!;
+  
   const params = new URLSearchParams({
     appId: APP_ID,
-    statsDataId: "0003334002",   // 統計表ID
+    statsDataId: statsTableId,   // 統計表ID
     cdCat01: item,               // 品目コード
     cdArea: area,                // 例: 50103: 大韓民国
-    cdTime: "2020000000",          // 例: 2020000000
+    cdTime: searchYear,          // 例: 2020000000
     // limit: "",
   });
 
@@ -90,36 +99,6 @@ export default async function Home({ searchParams }: SearchParams) {
   { label: "12月", quantity: "decemberQuantity", amount: "decemberAmount" },
 ] as const;
 
-  // 年合計や各月の合計を格納し、表示するためのデータ定義
-  const displayTradeData: DisplayTradeData = {
-    totalQuantity: 0,
-    totalAmount: 0,
-    januaryQuantity: 0,
-    januaryAmount: 0,
-    februaryQuantity: 0,
-    februaryAmount: 0,
-    marchQuantity: 0,
-    marchAmount: 0,
-    aprilQuantity: 0,
-    aprilAmount: 0,
-    mayQuantity: 0,
-    mayAmount: 0,
-    juneQuantity: 0,
-    juneAmount: 0,
-    julyQuantity: 0,
-    julyAmount: 0,
-    augustQuantity: 0,
-    augustAmount: 0,
-    septemberQuantity: 0,
-    septemberAmount: 0,
-    octoberQuantity: 0,
-    octoberAmount: 0,
-    novemberQuantity: 0,
-    novemberAmount: 0,
-    decemberQuantity: 0,
-    decemberAmount: 0,
-  };
-
   for (
     const [propertyName, cat02code] of Object.entries(converter) as [
     keyof DisplayTradeData,
@@ -128,7 +107,7 @@ export default async function Home({ searchParams }: SearchParams) {
   
   ) {
     displayTradeData[propertyName] = fetchedData
-    .filter((value) => 
+    .filter((value:string) => 
         // value["@cat01"] === itemCode &&
         value["@cat02"] === cat02code
         // value["@cat03"] === customCode &&
@@ -136,25 +115,10 @@ export default async function Home({ searchParams }: SearchParams) {
         // value["@time"] === yearCode
     )
     .reduce(
-      (total, value) => total + Number(value["$"] ?? 0),
+      (total: number, value) => total + Number(value["$"] ?? 0),
       0
     );
   }
-
-  // mothesとconverter、paramsとdisplayTradeDataをtradeData一つにまとめる
-
-  // const tradeData: TradeData = {
-  //   country: {
-  //       code : 50103,
-  //       name : "大韓民国",
-  //   },
-  //   year: 2020,
-  //   item: {
-  //       code : 0o000000,
-  //       name : "食料品",
-  //   }
-  //   results : TradeResult[];
-  // };
 
   // Excelダウンロード用データを作成
   const excelData = months.map((month) => ({
@@ -188,6 +152,11 @@ export default async function Home({ searchParams }: SearchParams) {
     // 検索用品目コードを取得
   const itemCodes = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[0].CLASS;
   console.log(itemCodes);
+
+  // 検索用年を取得
+  const surveyYears = testjson.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ[4].CLASS;
+  console.log(surveyYears);
+
 
   // const getTableIdParams = new URLSearchParams({
   //   appId: APP_ID,
@@ -255,6 +224,26 @@ export default async function Home({ searchParams }: SearchParams) {
             </option>
           ))}
         </select>
+
+        <label>
+          取得年次
+        </label>
+
+        <select name="year" defaultValue={year}>
+          {yearOptions.map((yearOption) => (
+            <option  key={yearOption["year"]} value={yearOption["yearSearchValue"]}>
+              {yearOption["year"]}
+            </option>
+          ))}
+        </select>
+
+        {/* <select name="year" defaultValue={year}>
+          {surveyYears.map((surveyYear) => (
+            <option  key={surveyYear["@name"]} value={surveyYear["@code"]}>
+              {surveyYear["@name"]}
+            </option>
+          ))}
+        </select> */}
 
         <button type = "submit">検索</button>
 

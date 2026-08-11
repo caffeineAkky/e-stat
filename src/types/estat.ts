@@ -59,5 +59,8 @@ export type ExcelDownloadButtonProps = {
 export type SearchParams = {
     searchParams: Promise<{
         area?: string | string[];
+        item?: string | string[];
+        year?: string | string[];
+
     }>;
 };
