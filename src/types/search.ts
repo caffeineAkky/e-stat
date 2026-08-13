@@ -1,7 +1,8 @@
 export type SearchConditions = {
-    area: string;
-    item: string;
-    year: number;
+    area?: string;
+    item?: string;
+    year?: string;
+    tableDataId?: string;
 }
 
 export type SelectedOption = {

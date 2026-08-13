@@ -6,7 +6,7 @@ import type {
 
 type SearchFormProps = {
     options: SearchFormOptions;
-    conditions: SearchConditions;
+    conditions?: SearchConditions;
 }
 
 export default function SearchForm({
@@ -17,7 +17,7 @@ export default function SearchForm({
       <Form action="">
         <label>
             国
-            <select name="area" defaultValue={conditions.area}>
+            <select name="area" defaultValue={conditions?.area}>
                 {options.areas.map((area) => (
                     <option key={area.value} value={area.value}>
                         {area.label}
@@ -28,7 +28,7 @@ export default function SearchForm({
 
         <label>
             品目
-            <select name="item" defaultValue={conditions.item}>
+            <select name="item" defaultValue={conditions?.item}>
                 {options.items.map((item) => (
                     <option key={item.value} value={item.value}>
                         {item.label}
@@ -38,7 +38,7 @@ export default function SearchForm({
         </label>
         <label>
             年
-            <select name="year" defaultValue={conditions.year}>
+            <select name="year" defaultValue={conditions?.year}>
                 {options.years.map((year) => (
                     <option key={year.yearSearchValue} value={year.yearSearchValue}>
                         {year.year}

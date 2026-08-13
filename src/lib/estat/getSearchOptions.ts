@@ -2,13 +2,15 @@ import { getEstatAppId } from "@/lib/estat/getEstatAppId";
 import { yearOptions } from "@/lib/estat/constants";
 import type { SearchFormOptions, SelectedOption } from "@/types/search";
 
-export async function getSearchOptions() {
+export default async function getSearchOptions() {
     const APP_ID = getEstatAppId();
 
+    // いずれはstatsDataIdを動的に切り替えて、正しい品目と国名が出るようにしないと
+    const statsDataId = "0003334002";
+    
     const params = new URLSearchParams({
         appId: APP_ID,
-        statsDataId: "0003334002",   // 統計表ID
-        // いずれはstatsDataIdを動的に切り替えて、正しい品目と国名が出るようにしないと
+        statsDataId: statsDataId,   // 統計表ID
     });
 
     const res = await fetch(
@@ -39,8 +41,8 @@ export async function getSearchOptions() {
     
     for (const itemCode of itemCodes) {
         const item: SelectedOption = {
-            value: itemCodes["@code"],
-            label: itemCodes["@name"],
+            value: itemCode["@code"],
+            label: itemCode["@name"],
         }
 
         items.push(item);
