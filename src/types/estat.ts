@@ -11,56 +11,48 @@ export type TradeData = {
     results : TradeResult[];
 };
 
-type TradeResult = {
+export type TradeUnits = {
+    quantityUnit?: string;
+    amountUnit?: string;
+}
+
+export type MonthlyTradeData = {
     month: number;
     quantity: number;
     amount: number;
-};
+}
 
-export type DisplayTradeData = {
-  totalQuantity: number;
-  totalAmount: number;
-  januaryQuantity: number;
-  januaryAmount: number;
-  februaryQuantity: number;
-  februaryAmount: number;
-  marchQuantity: number;
-  marchAmount: number;
-  aprilQuantity: number;
-  aprilAmount: number;
-  mayQuantity: number;
-  mayAmount: number;
-  juneQuantity: number;
-  juneAmount: number;
-  julyQuantity: number;
-  julyAmount: number;
-  augustQuantity: number;
-  augustAmount: number;
-  septemberQuantity: number;
-  septemberAmount: number;
-  octoberQuantity: number;
-  octoberAmount: number;
-  novemberQuantity: number;
-  novemberAmount: number;
-  decemberQuantity: number;
-  decemberAmount: number;
-};
+export type AnnualTradeData = {
+    year: number;
+    totalQuantity?: number;
+    totalAmount?: number;
+    monthlyData: MonthlyTradeData[];
+}
 
-type ExcelRow = {
-    月: string;
-    数量: number;
-    金額: number;
-};
+export type TradeResult = {
+    units: TradeUnits;
+    annualData: AnnualTradeData[];
+}
 
 export type ExcelDownloadButtonProps = {
-    rows: ExcelRow[];
+    rows: AnnualTradeData[];
 };
 
-export type SearchParams = {
-    searchParams: Promise<{
+export type SearchParamsValues = {
         area?: string | string[];
         item?: string | string[];
         year?: string | string[];
+}
 
-    }>;
+export type SearchParams = {
+    searchParams: Promise<SearchParamsValues>;
+};
+
+export type SingleData = {
+  "@cat01": string;
+  "@cat02": string;
+  "@area": string;
+  "@time": string;
+  "@unit"?: string;
+  "$": string;
 };

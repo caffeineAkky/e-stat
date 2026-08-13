@@ -7,7 +7,7 @@ export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) 
     const handleDownload = () => {
 
         // 配列データからワークシートを作る
-        const worksheet = utils.json_to_sheet(rows);
+        const worksheet = utils.json_to_sheet(rows[0].monthlyData);
 
         // Excelブックを作る
         const workbook = utils.book_new();
