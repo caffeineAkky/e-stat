@@ -16,6 +16,7 @@ export default async function Home({ searchParams }: SearchParams) {
   }
 
   const tradeData: SingleData[] = await getTradeData(searchConditions);
+  // 品目・国名を追加しておくと楽かも。
   const result: TradeResult = aggregateTradeData(tradeData);
 
   return (

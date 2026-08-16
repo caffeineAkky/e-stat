@@ -20,9 +20,6 @@ export default function SearchResult({
             <p>
                 国名：{conditions.area}
             </p>
-            <p>
-                年：{conditions.year?.slice(0,4)}
-            </p>
             <table>
                 <thead>
                 <tr>
