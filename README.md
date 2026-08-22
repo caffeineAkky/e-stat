@@ -25,3 +25,7 @@ e-Statの貿易統計データを取得し、指定条件に応じて時系列�
 - グラフ表示
 - 検索履歴
 - Supabaseキャッシュ
+
+# 環境立ち上げ(Docker)
+- docker cpmpose up --build -d(初回)
+- docker compose up -d(2回目以降)
