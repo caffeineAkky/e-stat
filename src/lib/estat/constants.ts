@@ -1,4 +1,5 @@
 // import type { DisplayTradeData } from "@/types/estat"
+import type { SelectedYearsOption } from "@/types/search";
 
 // cat01など分かりにくい名前の対応表を作成
 export const tradeCategories = {
@@ -49,13 +50,13 @@ export const yearToStatsDataId: Partial<Record<number, string>> = {
     2026: "0004049327",
 };
 
-export const yearOptions = Object.entries(yearToStatsDataId).map(
-    ([year, tableId]) => ({
+export const yearOptions: SelectedYearsOption[] = Object.entries(yearToStatsDataId)
+    .filter((entry): entry is [string, string] => entry[1] !== undefined)
+    .map(([year, tableId]) => ({
         year: Number(year),
         tableId,
         yearSearchValue: `${year}000000`,
-    })
-)
+    }))
 
   // 年合計や各月の合計を格納し、表示するためのデータ定義
 export const displayTradeData = {
