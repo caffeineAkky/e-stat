@@ -20,6 +20,5 @@ export default function createMonthlyData(data: SingleData[]): MonthlyTradeData[
             quantity: Number(quantityData?.["$"] ?? 0),
             amount: Number(amountData?.["$"] ?? 0),
         }
-
     })
 }
