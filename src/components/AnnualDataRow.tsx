@@ -12,7 +12,7 @@ type AnnualDataRowProps = {
 export default function AnnualDataRow({ data, units }: AnnualDataRowProps ) {
     const [isOpen, setIsOpen ] = useState(false);
 
-    const detailId = 'monthly-detail-${data.year}';
+    const detailId = `monthly-detail-${data.year}`;
 
     return (
         <>
