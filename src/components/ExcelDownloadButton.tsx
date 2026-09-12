@@ -9,9 +9,9 @@ export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) 
         const exportRows = rows.flatMap((row) => [
             {
                 年: row.year,
-                月: "年間合計",
-                数量: row.totalQuantity,
-                金額: row.totalAmount,
+                月: 0,
+                数量: row.totalQuantity ?? 0,
+                金額: row.totalAmount ?? 0,
             },
             ...row.monthlyData.map((monthly) => ({
                 年: row.year,
@@ -19,7 +19,7 @@ export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) 
                 数量: monthly.quantity,
                 金額: monthly.amount,
             }))
-        ])
+        ]);
 
         // 配列データからワークシートを作る
         const worksheet = utils.json_to_sheet(exportRows);
