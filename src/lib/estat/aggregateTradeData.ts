@@ -12,7 +12,7 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
     const totalAmount = toNumberOrZero(
         fetchedTradeData.values.find(
             (item) => item["@cat02"] === "120"
-      )?.["$"]
+        )?.["$"]
     );
 
     const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values)
