@@ -1,6 +1,6 @@
 import { yearToStatsDataId } from "@/lib/estat/constants";
 
-export default function convertSelectedYearsToStatsDataId(searchYear: string | undefined ): string | undefined {
+export default function convertSelectedYearsToStatsDataId(searchYear: string | undefined): string | undefined {
     if (!searchYear) {
         return undefined;
     }

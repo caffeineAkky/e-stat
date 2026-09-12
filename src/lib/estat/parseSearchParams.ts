@@ -8,19 +8,16 @@ export default async function parseSearchParams(searchParams: Promise<SearchPara
     const searchArea = 
     typeof area === "string" && /^\d{5}$/.test(area)
         ? area
-        // : "50103";
         : undefined;
 
     const searchItem = 
     typeof item === "string" && /^\d{8}$/.test(item)
         ? item
-        // : "00000000";
         : undefined;
 
     const searchYear = 
     typeof year === "string" && /^\d{10}$/.test(year)
         ? year
-        // : "2022000000";
         : undefined;
 
     const statsTableId: string | undefined = convertSelectedYearToStatsDataId(searchYear);
