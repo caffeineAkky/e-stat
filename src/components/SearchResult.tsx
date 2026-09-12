@@ -1,4 +1,3 @@
-import type { SearchConditions } from "@/types/search"
 import type { TradeResult } from "@/types/estat"
 import ExcelDownloadButton from "./ExcelDownloadButton"
 import AnnualDataRow from "./AnnualDataRow"
