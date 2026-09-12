@@ -1,7 +1,7 @@
 import type { SingleData, FetchedTradeData, EstatClassObject } from "@/types/estat";
 import { quantityUnitLabels } from "./constants";
 
-export default function normalizeTradeData(fetchedDataValues: SingleData[], statistiacalData: EstatClassObject[] ):FetchedTradeData  {
+export default function normalizeTradeData(fetchedDataValues: SingleData[], statisticalData: EstatClassObject[] ):FetchedTradeData  {
     // 取得データ存在チェック
     const firstValue = fetchedDataValues[0];
 
@@ -10,7 +10,7 @@ export default function normalizeTradeData(fetchedDataValues: SingleData[], stat
     }
 
     // 品目取得処理
-    const itemCategory = statistiacalData.find(
+    const itemCategory = statisticalData.find(
         (item) => item["@id"] === "cat01"
     );
 
@@ -35,7 +35,7 @@ export default function normalizeTradeData(fetchedDataValues: SingleData[], stat
     const itemName = itemInfo["@name"];
 
     // 国名取得処理
-    const countryCategory = statistiacalData.find(
+    const countryCategory = statisticalData.find(
         (item) => item["@id"] === "area"
     );
 
