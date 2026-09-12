@@ -6,8 +6,23 @@ import type { ExcelDownloadButtonProps } from "@/types/estat";
 export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) {
     const handleDownload = () => {
 
+        const exportRows = rows.flatMap((row) => [
+            {
+                年: row.year,
+                月: "年間合計",
+                数量: row.totalQuantity,
+                金額: row.totalAmount,
+            },
+            ...row.monthlyData.map((monthly) => ({
+                年: row.year,
+                月: monthly.month,
+                数量: monthly.quantity,
+                金額: monthly.amount,
+            }))
+        ])
+
         // 配列データからワークシートを作る
-        const worksheet = utils.json_to_sheet(rows[0].monthlyData);
+        const worksheet = utils.json_to_sheet(exportRows);
 
         // Excelブックを作る
         const workbook = utils.book_new();
