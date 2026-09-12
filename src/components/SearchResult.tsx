@@ -1,6 +1,7 @@
 import type { SearchConditions } from "@/types/search"
 import type { TradeResult } from "@/types/estat"
 import ExcelDownloadButton from "./ExcelDownloadButton"
+import AnnualDataRow from "./AnnualDataRow"
 
 type SearchResultProps = {
     conditions: SearchConditions;
@@ -31,8 +32,7 @@ export default function SearchResult({
                 </thead>
 
                 <tbody>
-
-                {result.annualData.map((data) => (
+                {/* {result.annualData.map((data) => (
                 <tr key={data.year}>
                     <td>
                         {data.year}
@@ -44,7 +44,14 @@ export default function SearchResult({
                         {data.totalAmount}
                     </td>
                 </tr> 
-                ))}
+                ))} */}
+                    {result.annualData.map((data) => (
+                        <AnnualDataRow
+                            key={data.year}
+                            data={data}
+                            units={result.units}
+                        />
+                    ))}
                 </tbody>
             </table>
 
