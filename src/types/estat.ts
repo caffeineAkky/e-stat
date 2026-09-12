@@ -30,7 +30,10 @@ export type AnnualTradeData = {
 }
 
 export type TradeResult = {
-    units: TradeUnits;
+    item: ItemCode,
+    country: CountryCode,
+    year: number,
+    units: Units,
     annualData: AnnualTradeData[];
 }
 
@@ -56,3 +59,40 @@ export type SingleData = {
   "@unit"?: string;
   "$": string;
 };
+
+export type FetchedTradeData = {
+    item: ItemCode,
+    country: CountryCode,
+    year: number,
+    units: Units,
+    values: SingleData[]
+};
+
+export type EstatClass = {
+  "@code": string;
+  "@name": string;
+};
+
+export type EstatClassObject = {
+  "@id": string;
+  CLASS: EstatClass | EstatClass[];
+};
+
+export type ItemCode = {
+    code: string,
+    name: string
+}
+
+export type CountryCode = {
+    code: string,
+    name: string
+}
+
+export type Units = {
+    quantity: {
+        code?: string,
+        label?: string
+    },
+    amount?: string,
+}
+ 

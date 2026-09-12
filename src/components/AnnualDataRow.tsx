@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { AnnualTradeData, TradeUnits } from "@/types/estat";
+import type { AnnualTradeData, Units } from "@/types/estat";
 import MonthlyDetailTable from "./MonthlyDetailTable";
 
 type AnnualDataRowProps = {
     data: AnnualTradeData;
-    units: TradeUnits;
+    units: Units;
 }
 
 export default function AnnualDataRow({ data, units }: AnnualDataRowProps ) {

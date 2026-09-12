@@ -1,30 +1,23 @@
-import { AnnualTradeData, TradeResult, TradeUnits, MonthlyTradeData, SingleData } from "@/types/estat";
+import type { AnnualTradeData, TradeResult, TradeUnits, MonthlyTradeData, FetchedTradeData } from "@/types/estat";
 import createMonthlyData from "./createMonthlyData";
 
-export default function aggregateTradeData(fetchedTradeData: SingleData[]): TradeResult {
+export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): TradeResult {
 
     const testData = fetchedTradeData;
     console.log(testData);
 
-    const year = Number(fetchedTradeData[0]["@time"].slice(0,4));
-    const totalQuantity = Number(fetchedTradeData.find(
+    const totalQuantity = Number(fetchedTradeData.values.find(
         (item) => item["@cat02"] === "110"
     )?.["$"]);
 
-    const totalAmount = Number(fetchedTradeData.find(
+    const totalAmount = Number(fetchedTradeData.values.find(
         (item) => item["@cat02"] === "120"
     )?.["$"]);
 
-    const quantityUnit = "";
-    const amountUnit = fetchedTradeData.find(
-        (item) => item["@cat02"] === "120"
-    )?.["@unit"];
-
-
-    const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData)
+    const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values)
 
     const singleYearData: AnnualTradeData = {
-        year,
+        year: fetchedTradeData.year,
         totalQuantity,
         totalAmount,
         monthlyData,
@@ -34,13 +27,11 @@ export default function aggregateTradeData(fetchedTradeData: SingleData[]): Trad
 
     annualData.push(singleYearData);
 
-    const units: TradeUnits = {
-        quantityUnit,
-        amountUnit,
-    }
-
     const result: TradeResult = {
-        units,
+        item: fetchedTradeData.item,
+        country: fetchedTradeData.country,
+        year: fetchedTradeData.year,
+        units: fetchedTradeData.units,
         annualData,
     };
 

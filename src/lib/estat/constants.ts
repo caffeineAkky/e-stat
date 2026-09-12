@@ -133,3 +133,25 @@ export const months = [
   { label: "11月", quantity: "novemberQuantity", amount: "novemberAmount" },
   { label: "12月", quantity: "decemberQuantity", amount: "decemberAmount" },
 ] as const;
+
+export const quantityUnitLabels: Record<string, string> = {
+  CM: "立方メートル",
+  CT: "カラット",
+  DT: "排水トン",
+  DZ: "ダース",
+  GR: "グラム",
+  GS: "グロス",
+  GT: "総トン数",
+  KG: "キログラム",
+  KL: "キロリットル",
+  L : "リットル",
+  M : "メートル",
+  MNO: "百万個",
+  MT: "トン",
+  NO: "個、本、枚、頭、羽、匹、台、両、機、隻、着",
+  PR: "足、対",
+  SM: "平方メートル",
+  ST: "組",
+  TH: "千本、千枚",
+  TNO: "千個"
+}
