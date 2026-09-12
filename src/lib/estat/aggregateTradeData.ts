@@ -3,13 +3,17 @@ import createMonthlyData from "./createMonthlyData";
 
 export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): TradeResult {
     
-    const totalQuantity = Number(fetchedTradeData.values.find(
-        (item) => item["@cat02"] === "110"
-    )?.["$"]);
+    const totalQuantity = toNumberOrZero(
+        fetchedTradeData.values.find(
+            (item) => item["@cat02"] === "110"
+        )?.["$"]
+    );
 
-    const totalAmount = Number(fetchedTradeData.values.find(
-        (item) => item["@cat02"] === "120"
-    )?.["$"]);
+    const totalAmount = toNumberOrZero(
+        fetchedTradeData.values.find(
+            (item) => item["@cat02"] === "120"
+        )?.["$"]
+    );
 
     const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values)
 
@@ -30,6 +34,11 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
         units: fetchedTradeData.units,
         annualData,
     };
+
+    function toNumberOrZero(value: string | undefined): number {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : 0;
+    }
 
     return result;
 }
