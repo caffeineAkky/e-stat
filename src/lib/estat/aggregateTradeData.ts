@@ -5,11 +5,11 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
     
     const totalQuantity = Number(fetchedTradeData.values.find(
         (item) => item["@cat02"] === "110"
-    )?.["$"]);
+    )?.["$"] ?? 0);
 
     const totalAmount = Number(fetchedTradeData.values.find(
         (item) => item["@cat02"] === "120"
-    )?.["$"]);
+    )?.["$"] ?? 0);
 
     const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values)
 
