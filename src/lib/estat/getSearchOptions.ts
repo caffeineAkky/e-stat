@@ -14,11 +14,13 @@ export default async function getSearchOptions() {
     });
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`,
+        { cache: "force-cache" }
     );
+
     const json = await res.json();
 
-    const values = json.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ;
+    const values = json.GET_META_INFO.METADATA_INF.CLASS_INF.CLASS_OBJ;
 
     // 国コードを取得
     const countryCodes = values[3].CLASS;
