@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: SearchParams) {
   return (
     <div>
       <SearchForm options={searchOptions} conditions={searchConditions}/>
-      <SearchResult conditions={searchConditions} result={result}/>
+      <SearchResult result={result}/>
     </div>
   );
 }

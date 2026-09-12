@@ -1,4 +1,4 @@
-import type { AnnualTradeData, TradeResult, TradeUnits, MonthlyTradeData, FetchedTradeData } from "@/types/estat";
+import type { AnnualTradeData, TradeResult, MonthlyTradeData, FetchedTradeData } from "@/types/estat";
 import createMonthlyData from "./createMonthlyData";
 
 export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): TradeResult {
@@ -30,7 +30,6 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
     const result: TradeResult = {
         item: fetchedTradeData.item,
         country: fetchedTradeData.country,
-        year: fetchedTradeData.year,
         units: fetchedTradeData.units,
         annualData,
     };

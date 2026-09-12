@@ -4,12 +4,10 @@ import ExcelDownloadButton from "./ExcelDownloadButton"
 import AnnualDataRow from "./AnnualDataRow"
 
 type SearchResultProps = {
-    conditions: SearchConditions;
-    result: TradeResult;
+    result: TradeResult
 }
 
 export default function SearchResult({
-    conditions,
     result,
 }: SearchResultProps) {
 

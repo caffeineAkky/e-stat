@@ -11,11 +11,6 @@ export type TradeData = {
     results : TradeResult[];
 };
 
-export type TradeUnits = {
-    quantityUnit?: string;
-    amountUnit?: string;
-}
-
 export type MonthlyTradeData = {
     month: number;
     quantity: number;
@@ -32,7 +27,6 @@ export type AnnualTradeData = {
 export type TradeResult = {
     item: ItemCode,
     country: CountryCode,
-    year: number,
     units: Units,
     annualData: AnnualTradeData[];
 }
