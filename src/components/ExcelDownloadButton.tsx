@@ -10,8 +10,8 @@ export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) 
             {
                 年: row.year,
                 月: 0,
-                数量: row.totalQuantity,
-                金額: row.totalAmount,
+                数量: row.totalQuantity ?? 0,
+                金額: row.totalAmount ?? 0,
             },
             ...row.monthlyData.map((monthly) => ({
                 年: row.year,
