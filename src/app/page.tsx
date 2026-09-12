@@ -8,7 +8,7 @@ import getSearchOptions from "@/lib/estat/getSearchOptions";
 import parseSearchParams from "@/lib/estat/parseSearchParams";
 
 export default async function Home({ searchParams }: SearchParams) {
-  const searchConditions: SearchConditions = await parseSearchParams(searchParams);
+  const searchConditions: SearchConditions | null = await parseSearchParams(searchParams);
   const searchOptions: SearchFormOptions = await getSearchOptions();
 
   if(!searchConditions) {
