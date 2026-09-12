@@ -1,4 +1,4 @@
-import type { SearchParams, TradeResult, SingleData } from "@/types/estat";
+import type { SearchParams, TradeResult, FetchedTradeData } from "@/types/estat";
 import type { SearchConditions, SearchFormOptions } from "@/types/search";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
@@ -15,14 +15,13 @@ export default async function Home({ searchParams }: SearchParams) {
     return <SearchForm options={searchOptions}/>
   }
 
-  const tradeData: SingleData[] = await getTradeData(searchConditions);
-  // 品目・国名をtradeDataに追加してaggregateに渡してあげると楽かも。
+  const tradeData: FetchedTradeData = await getTradeData(searchConditions);
   const result: TradeResult = aggregateTradeData(tradeData);
 
   return (
     <div>
       <SearchForm options={searchOptions} conditions={searchConditions}/>
-      <SearchResult conditions={searchConditions} result={result}/>
+      <SearchResult result={result}/>
     </div>
   );
 }

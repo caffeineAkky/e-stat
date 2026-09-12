@@ -1,32 +1,29 @@
-import type { SearchConditions } from "@/types/search"
 import type { TradeResult } from "@/types/estat"
 import ExcelDownloadButton from "./ExcelDownloadButton"
 import AnnualDataRow from "./AnnualDataRow"
 
 type SearchResultProps = {
-    conditions: SearchConditions;
-    result: TradeResult;
+    result: TradeResult
 }
 
 export default function SearchResult({
-    conditions,
     result,
 }: SearchResultProps) {
 
     return (
         <div>
             <p>
-                品目：{conditions.item}
+                品目：{result.item.name}
             </p>
             <p>
-                国名：{conditions.area}
+                国名：{result.country.name}
             </p>
             <table>
                 <thead>
                 <tr>
                     <th>年</th>
-                    <th>数量({result.units.quantityUnit})</th>
-                    <th>金額({result.units.amountUnit})</th>
+                    <th>数量({result.units.quantity.label})</th>
+                    <th>金額({result.units.amount})</th>
                     <th>月別詳細を見る</th>
                 </tr>
                 </thead>
