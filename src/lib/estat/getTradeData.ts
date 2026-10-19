@@ -36,6 +36,10 @@ export default async function getTradeData(searchConditions: SearchConditions) {
 
     const values = json.GET_STATS_DATA.STATISTICAL_DATA;
 
+    if(values.RESULT_INF.TOTAL_NUMBER === 0) {
+        return null;
+    }
+
     const fetchedDataValues: SingleData[] = values.DATA_INF?.VALUE ?? [];
 
     const fetchedTradeData: FetchedTradeData  = normalizeTradeData(fetchedDataValues, statisticalData);
