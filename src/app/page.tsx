@@ -12,7 +12,7 @@ export default async function Home({ searchParams }: SearchParams) {
   const searchConditions: SearchConditions | null = await parseSearchParams(searchParams);
   const searchOptions: SearchFormOptions = await getSearchOptions();
 
-  if(!searchConditions) {
+  if (!searchConditions) {
     return <SearchForm options={searchOptions}/>
   }
 

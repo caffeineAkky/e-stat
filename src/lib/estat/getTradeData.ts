@@ -32,13 +32,13 @@ export default async function getTradeData(searchConditions: SearchConditions) {
 
     const json = await res.json();
 
-    const statisticalData: EstatClassObject[] = json.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ;
-
     const values = json.GET_STATS_DATA.STATISTICAL_DATA;
 
-    if(values.RESULT_INF.TOTAL_NUMBER === 0) {
+    if(!values || Number(values.RESULT_INF?.TOTAL_NUMBER ?? 0) === 0) {
         return null;
     }
+
+    const statisticalData: EstatClassObject[] = json.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ;
 
     const fetchedDataValues: SingleData[] = values.DATA_INF?.VALUE ?? [];
 
