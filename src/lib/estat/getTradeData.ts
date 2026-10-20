@@ -2,7 +2,7 @@ import normalizeTradeData from "./normalizeTradeData";
 import { SearchConditions } from "@/types/search";
 import type { FetchedTradeData, SingleData, EstatClassObject } from "@/types/estat";
 
-export default async function getTradeData(searchConditions: SearchConditions) {
+export default async function getTradeData(searchConditions: SearchConditions): Promise<FetchedTradeData | null> {
     const APP_ID = process.env.ESTAT_APP_ID!;
 
     const params = new URLSearchParams({
@@ -32,9 +32,13 @@ export default async function getTradeData(searchConditions: SearchConditions) {
 
     const json = await res.json();
 
-    const statisticalData: EstatClassObject[] = json.GET_STATS_DATA.STATISTICAL_DATA.CLASS_INF.CLASS_OBJ;
+    const values = json.GET_STATS_DATA?.STATISTICAL_DATA;
 
-    const values = json.GET_STATS_DATA.STATISTICAL_DATA;
+    if (!values || Number(values.RESULT_INF?.TOTAL_NUMBER ?? 0) === 0) {
+        return null;
+    }
+
+    const statisticalData: EstatClassObject[] = values.CLASS_INF.CLASS_OBJ;
 
     const fetchedDataValues: SingleData[] = values.DATA_INF?.VALUE ?? [];
 
