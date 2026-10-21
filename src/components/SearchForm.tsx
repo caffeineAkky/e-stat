@@ -48,7 +48,6 @@ export default function SearchForm({
             </select>
         </label>
 
-        {/* <button type = "submit">検索</button> */}
         <SearchButton />
       </Form>
     )
