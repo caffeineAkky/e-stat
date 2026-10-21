@@ -154,4 +154,6 @@ export const quantityUnitLabels: Record<string, string> = {
   ST: "組",
   TH: "千本、千枚",
   TNO: "千個"
-}
+};
+
+export const estatRevalidateSeconds = 60 * 60 * 24;

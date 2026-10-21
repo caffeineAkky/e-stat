@@ -1,6 +1,7 @@
 import { getEstatAppId } from "@/lib/estat/getEstatAppId";
 import { yearOptions } from "@/lib/estat/constants";
 import type { SearchFormOptions, SelectedOption } from "@/types/search";
+import { estatRevalidateSeconds } from "@/lib/estat/constants"
 
 export default async function getSearchOptions() {
     const APP_ID = getEstatAppId();
@@ -15,7 +16,7 @@ export default async function getSearchOptions() {
 
     const res = await fetch(
         `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`,
-        { cache: "force-cache" }
+        { next: { revalidate: estatRevalidateSeconds } }
     );
 
     const json = await res.json();
