@@ -3,6 +3,7 @@ import type {
     SearchConditions,
     SearchFormOptions,
 } from "@/types/search";
+import SearchButton from "./SearchButton";
 
 type SearchFormProps = {
     options: SearchFormOptions;
@@ -47,7 +48,7 @@ export default function SearchForm({
             </select>
         </label>
 
-        <button type = "submit">検索</button>
+        <SearchButton />
       </Form>
     )
 }
