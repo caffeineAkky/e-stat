@@ -11,7 +11,7 @@ import isSelectableConditions from "@/lib/estat/isSelectableConditions";
 
 export default async function Home({ searchParams }: SearchParams) {
   const searchConditions: SearchConditions | null = await parseSearchParams(searchParams);
-  const searchOptions: SearchFormOptions = await getSearchOptions();
+  const searchOptions: SearchFormOptions = await getSearchOptions(searchConditions?.tableDataId);
 
   if (!searchConditions || !isSelectableConditions(searchConditions, searchOptions)) {
     return <SearchForm options={searchOptions}/>
