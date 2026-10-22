@@ -1,10 +1,11 @@
-import normalizeTradeData from "./normalizeTradeData";
+import normalizeTradeData from "@/lib/estat/normalizeTradeData";
 import { SearchConditions } from "@/types/search";
 import type { FetchedTradeData, SingleData, EstatClassObject } from "@/types/estat";
-import { estatRevalidateSeconds } from "@/lib/estat/constants"
+import { estatRevalidateSeconds } from "@/lib/estat/constants";
+import { getEstatAppId } from "./getEstatAppId";
 
 export default async function getTradeData(searchConditions: SearchConditions): Promise<FetchedTradeData | null> {
-    const APP_ID = process.env.ESTAT_APP_ID!;
+    const APP_ID = getEstatAppId();
 
     const params = new URLSearchParams({
         appId: APP_ID,
