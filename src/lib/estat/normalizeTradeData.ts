@@ -41,7 +41,7 @@ export default function normalizeTradeData(fetchedDataValues: SingleData[], stat
 
     if (!countryCategory) {
         throw new Error("国の分類情報がありません");
-    };
+    }
 
     const countries = Array.isArray(countryCategory.CLASS)
     ? countryCategory.CLASS

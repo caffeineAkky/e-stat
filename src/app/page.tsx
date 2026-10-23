@@ -7,12 +7,13 @@ import getTradeData from "@/lib/estat/getTradeData";
 import aggregateTradeData from "@/lib/estat/aggregateTradeData";
 import getSearchOptions from "@/lib/estat/getSearchOptions";
 import parseSearchParams from "@/lib/estat/parseSearchParams";
+import isSelectableConditions from "@/lib/estat/isSelectableConditions";
 
 export default async function Home({ searchParams }: SearchParams) {
   const searchConditions: SearchConditions | null = await parseSearchParams(searchParams);
-  const searchOptions: SearchFormOptions = await getSearchOptions();
+  const searchOptions: SearchFormOptions = await getSearchOptions(searchConditions?.tableDataId);
 
-  if (!searchConditions) {
+  if (!searchConditions || !isSelectableConditions(searchConditions, searchOptions)) {
     return <SearchForm options={searchOptions}/>
   }
 

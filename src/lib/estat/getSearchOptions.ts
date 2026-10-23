@@ -1,29 +1,37 @@
 import { getEstatAppId } from "@/lib/estat/getEstatAppId";
-import { yearOptions } from "@/lib/estat/constants";
+import { yearOptions, estatRevalidateSeconds, defaultStatsDataId } from "@/lib/estat/constants";
 import type { SearchFormOptions, SelectedOption } from "@/types/search";
+import type { EstatClassObject } from "@/types/estat";
 
-export default async function getSearchOptions() {
+export default async function getSearchOptions(statsTableId: string = defaultStatsDataId) {
     const APP_ID = getEstatAppId();
-
-    // いずれはstatsDataIdを動的に切り替えて、正しい品目と国名が出るようにしないと
-    const statsDataId = "0003334002";
     
     const params = new URLSearchParams({
         appId: APP_ID,
-        statsDataId: statsDataId,   // 統計表ID
+        statsDataId: statsTableId,   // 統計表ID
     });
 
     const res = await fetch(
         `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`,
-        { cache: "force-cache" }
+        { next: { revalidate: estatRevalidateSeconds } }
     );
 
     const json = await res.json();
 
-    const values = json.GET_META_INFO.METADATA_INF.CLASS_INF.CLASS_OBJ;
+    const values: EstatClassObject[] = json.GET_META_INFO.METADATA_INF.CLASS_INF.CLASS_OBJ;
 
     // 国コードを取得
-    const countryCodes = values[3].CLASS;
+    const countryCategory = values.find(
+        (item) => item["@id"] === "area"
+    );
+
+    if (!countryCategory) {
+        throw new Error("国の分類情報がありません");
+    }
+
+    const countryCodes = Array.isArray(countryCategory.CLASS)
+    ? countryCategory.CLASS
+    : [countryCategory.CLASS];
 
     const areas: SelectedOption[] = [];
     
@@ -37,7 +45,17 @@ export default async function getSearchOptions() {
     }
 
     // 品目コードを取得
-    const itemCodes = values[0].CLASS;
+    const itemCategory = values.find(
+        (item) => item["@id"] === "cat01"
+    );
+
+    if (!itemCategory) {
+        throw new Error("品目の分類情報がありません");
+    }
+
+    const itemCodes = Array.isArray(itemCategory.CLASS)
+    ? itemCategory.CLASS
+    : [itemCategory.CLASS];
 
     const items: SelectedOption[] = [];
     

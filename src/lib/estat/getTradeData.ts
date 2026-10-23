@@ -1,9 +1,11 @@
-import normalizeTradeData from "./normalizeTradeData";
+import normalizeTradeData from "@/lib/estat/normalizeTradeData";
 import { SearchConditions } from "@/types/search";
 import type { FetchedTradeData, SingleData, EstatClassObject } from "@/types/estat";
+import { estatRevalidateSeconds } from "@/lib/estat/constants";
+import { getEstatAppId } from "./getEstatAppId";
 
 export default async function getTradeData(searchConditions: SearchConditions): Promise<FetchedTradeData | null> {
-    const APP_ID = process.env.ESTAT_APP_ID!;
+    const APP_ID = getEstatAppId();
 
     const params = new URLSearchParams({
         appId: APP_ID,
@@ -27,7 +29,8 @@ export default async function getTradeData(searchConditions: SearchConditions): 
     }
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`,
+        { next: { revalidate: estatRevalidateSeconds } }
     );
 
     const json = await res.json();
