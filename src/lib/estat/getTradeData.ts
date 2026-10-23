@@ -9,7 +9,6 @@ export default async function getTradeData(searchConditions: SearchConditions): 
 
     const params = new URLSearchParams({
         appId: APP_ID,
-        
         // limit: "",
     });
 
