@@ -26,6 +26,7 @@ export default async function Home({ searchParams }: SearchParams) {
       </div>
     );
   }
+  
   const result: TradeResult = aggregateTradeData(tradeData);
 
   return (

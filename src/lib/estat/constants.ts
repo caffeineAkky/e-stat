@@ -156,6 +156,4 @@ export const quantityUnitLabels: Record<string, string> = {
   TNO: "千個"
 };
 
-export const estatRevalidateSeconds = 60 * 60 * 24;
-
 export const defaultStatsDataId = "0003334002";
