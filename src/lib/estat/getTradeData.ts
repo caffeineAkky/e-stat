@@ -1,10 +1,13 @@
 import normalizeTradeData from "@/lib/estat/normalizeTradeData";
 import { SearchConditions } from "@/types/search";
 import type { FetchedTradeData, SingleData, EstatClassObject } from "@/types/estat";
-import { estatRevalidateSeconds } from "@/lib/estat/constants";
 import { getEstatAppId } from "./getEstatAppId";
+import { cacheLife } from "next/cache";
 
 export default async function getTradeData(searchConditions: SearchConditions): Promise<FetchedTradeData | null> {
+    "use cache";
+    cacheLife("days");
+
     const APP_ID = getEstatAppId();
 
     const params = new URLSearchParams({
@@ -29,11 +32,14 @@ export default async function getTradeData(searchConditions: SearchConditions): 
     }
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`,
-        { next: { revalidate: estatRevalidateSeconds } }
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`
     );
 
+    if (!res.ok) throw new Error(`e-Stat HTTP ${res.status}`);
+
     const json = await res.json();
+    const status = Number(json.GET_STATS_DATA?.RESULT?.STATUS);
+    if (!(status < 100)) throw new Error(`e-Stat error: ${status}`);
 
     const values = json.GET_STATS_DATA?.STATISTICAL_DATA;
 

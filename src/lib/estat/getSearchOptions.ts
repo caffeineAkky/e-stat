@@ -1,9 +1,13 @@
 import { getEstatAppId } from "@/lib/estat/getEstatAppId";
-import { yearOptions, estatRevalidateSeconds, defaultStatsDataId } from "@/lib/estat/constants";
+import { yearOptions, defaultStatsDataId } from "@/lib/estat/constants";
 import type { SearchFormOptions, SelectedOption } from "@/types/search";
 import type { EstatClassObject } from "@/types/estat";
+import { cacheLife } from "next/cache";
 
 export default async function getSearchOptions(statsTableId: string = defaultStatsDataId) {
+    "use cache";
+    cacheLife("days");
+    
     const APP_ID = getEstatAppId();
     
     const params = new URLSearchParams({
@@ -12,8 +16,7 @@ export default async function getSearchOptions(statsTableId: string = defaultSta
     });
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`,
-        { next: { revalidate: estatRevalidateSeconds } }
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`
     );
 
     const json = await res.json();
@@ -40,7 +43,6 @@ export default async function getSearchOptions(statsTableId: string = defaultSta
             value: countryCode["@code"],
             label: countryCode["@name"],
         }
-
         areas.push(area);
     }
 
