@@ -10,6 +10,7 @@ import parseSearchParams from "@/lib/estat/parseSearchParams";
 import isSelectableConditions from "@/lib/estat/isSelectableConditions";
 
 export default async function Home({ searchParams }: SearchParams) {
+  // errorが返ってきた時のハンドリングを書く
   const searchConditions: SearchConditions | null = await parseSearchParams(searchParams);
   const searchOptions: SearchFormOptions = await getSearchOptions(searchConditions?.tableDataId);
 

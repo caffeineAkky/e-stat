@@ -22,6 +22,7 @@ export default async function parseSearchParams(searchParams: Promise<SearchPara
 
     const statsTableId: string | undefined = convertSelectedYearToStatsDataId(searchYear);
 
+    // errorを返す
     if (
         searchArea === undefined ||
         searchItem === undefined ||
