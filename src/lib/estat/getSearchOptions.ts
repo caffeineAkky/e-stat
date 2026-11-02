@@ -19,7 +19,12 @@ export default async function getSearchOptions(statsTableId: string = defaultSta
         `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`
     );
 
+    if (!res.ok) throw new Error(`e-Stat HTTP ${res.status}`);
+
     const json = await res.json();
+
+    const status = Number(json.GET_META_INFO?.RESULT?.STATUS);
+    if (!(status < 100)) throw new Error(`e-Stat error: ${status}`);
 
     const values: EstatClassObject[] = json.GET_META_INFO.METADATA_INF.CLASS_INF.CLASS_OBJ;
 

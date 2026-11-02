@@ -21,3 +21,8 @@ export type SearchFormOptions = {
     items: SelectedOption[];
     years: SelectedYearsOption[];
 }
+
+export type ParseResult = 
+    | { status: "empty" }
+    | { status: "invalid"; message: string }
+    | { status: "ok"; conditions: SearchConditions };
