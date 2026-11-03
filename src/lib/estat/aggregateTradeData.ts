@@ -1,5 +1,6 @@
 import type { AnnualTradeData, TradeResult, MonthlyTradeData, FetchedTradeData } from "@/types/estat";
-import createMonthlyData from "./createMonthlyData";
+import createMonthlyData from "@/lib/estat/createMonthlyData";
+import toNumberOrZero from "@/lib/estat/toNumberOrZero";
 
 export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): TradeResult {
     
@@ -34,11 +35,6 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
         units: fetchedTradeData.units,
         annualData,
     };
-
-    function toNumberOrZero(value: string | undefined): number {
-        const number = Number(value);
-        return Number.isFinite(number) ? number : 0;
-    }
 
     return result;
 }

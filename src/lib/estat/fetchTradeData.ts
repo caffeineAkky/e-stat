@@ -32,7 +32,8 @@ export default async function fetchTradeData(searchConditions: SearchConditions)
     }
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData?${params}`,
+        { signal: AbortSignal.timeout(10_000) }
     );
 
     if (!res.ok) throw new Error(`e-Stat HTTP ${res.status}`);

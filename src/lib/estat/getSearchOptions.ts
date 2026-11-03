@@ -16,7 +16,8 @@ export default async function getSearchOptions(statsTableId: string = defaultSta
     });
 
     const res = await fetch(
-        `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`
+        `https://api.e-stat.go.jp/rest/3.0/app/json/getMetaInfo?${params}`,
+        { signal: AbortSignal.timeout(10_000) }
     );
 
     if (!res.ok) throw new Error(`e-Stat HTTP ${res.status}`);
