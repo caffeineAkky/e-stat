@@ -1,4 +1,4 @@
-import type { SearchParams, TradeResult, FetchedTradeData } from "@/types/estat";
+import type { SearchParams, TradeResult, FetchedTradeData, TradeDataResult } from "@/types/estat";
 import type { SearchConditions, ParseResult, SearchFormOptions } from "@/types/search";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
@@ -42,8 +42,18 @@ export default async function Home({ searchParams }: SearchParams) {
     );
   }
 
-  const tradeData: FetchedTradeData | null = await getTradeData(searchConditions);
-  if (tradeData === null) {
+  const tradeResult: TradeDataResult = await getTradeData(searchConditions);
+  
+  if (tradeResult.status === "error") {
+    return (
+      <div>
+        <SearchForm options={searchOptions} conditions={searchConditions}/>
+        <p>{tradeResult.reason}</p>        
+      </div>
+    );
+  }
+
+  if (tradeResult.status === "empty") {
     return (
       <div>
         <SearchForm options={searchOptions} conditions={searchConditions}/>
@@ -52,7 +62,7 @@ export default async function Home({ searchParams }: SearchParams) {
     );
   }
   
-  const result: TradeResult = aggregateTradeData(tradeData);
+  const result: TradeResult = aggregateTradeData(tradeResult.data);
 
   return (
     <div>
