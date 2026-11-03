@@ -188,7 +188,7 @@ describe("isSelecttableConditions", () => {
     it("year condition does not exist in the fetched e-stat metadata", () => {
         const searchConditions: SearchConditions = {
             area: "10000",
-            item: "11100002",
+            item: "11100000",
             year: "1990000000",
             tableDataId: "0001000000",
         };
