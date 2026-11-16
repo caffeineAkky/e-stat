@@ -22,7 +22,12 @@ export type SearchFormOptions = {
     years: SelectedYearsOption[];
 }
 
+export type SearchOptionResult =
+    | { status: "ok"; data: SearchFormOptions }
+    | { status: "error"; reason: string };
+
 export type ParseResult = 
     | { status: "empty" }
     | { status: "invalid"; message: string }
     | { status: "ok"; conditions: SearchConditions };
+
