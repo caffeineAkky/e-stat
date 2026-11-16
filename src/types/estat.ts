@@ -94,3 +94,4 @@ export type TradeDataResult =
     | { status: "ok"; data: FetchedTradeData }
     | { status: "empty" }
     | { status: "error"; reason: string };
+
