@@ -1,8 +1,9 @@
 import type { SearchParams, TradeResult, FetchedTradeData, TradeDataResult } from "@/types/estat";
-import type { SearchConditions, ParseResult, SearchFormOptions } from "@/types/search";
+import type { SearchConditions, ParseResult, SearchOptionResult, SearchFormOptions } from "@/types/search";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
 import NoResult from "@/components/NoResult";
+import NoSearchOption from "@/components/NoSearchOption";
 import getTradeData from "@/lib/estat/getTradeData";
 import aggregateTradeData from "@/lib/estat/aggregateTradeData";
 import getSearchOptions from "@/lib/estat/getSearchOptions";
@@ -14,9 +15,15 @@ export default async function Home({ searchParams }: SearchParams) {
 
   const parsed: ParseResult = await parseSearchParams(searchParams);
 
-  const searchOptions: SearchFormOptions = await getSearchOptions(
+  const searchOptionResult: SearchOptionResult = await getSearchOptions(
     parsed.status === "ok" ? parsed.conditions.tableDataId : defaultStatsDataId
   );
+
+  if (searchOptionResult.status === "error") {
+    return <NoSearchOption/>;
+  }
+
+  const searchOptions:SearchFormOptions = searchOptionResult.data;
 
   if (parsed.status === "empty") {
     return <SearchForm options={searchOptions}/>;
