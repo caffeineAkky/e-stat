@@ -13,14 +13,14 @@ export type TradeData = {
 
 export type MonthlyTradeData = {
     month: number;
-    quantity: number;
-    amount: number;
+    quantity: number | null;
+    amount: number | null;
 }
 
 export type AnnualTradeData = {
     year: number;
-    totalQuantity?: number;
-    totalAmount?: number;
+    totalQuantity?: number | null;
+    totalAmount?: number | null;
     monthlyData: MonthlyTradeData[];
 }
 

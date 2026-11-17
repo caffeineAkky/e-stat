@@ -1,7 +1,7 @@
 import createMonthlyData from "@/lib/estat/createMonthlyData";
 
 describe("createMonthlyData", () => {
-    it("cat02が130と140のデータを1月の数量と金額に変換する", () => {
+    it("maps cat02 codes 130 and 140 to January's quantity and amount", () => {
         const data = [
         {
             "@cat01": "00000000",
@@ -29,17 +29,17 @@ describe("createMonthlyData", () => {
         });
     });
 
-    it("該当するデータがない月は0にする", () => {
+    it("returns null for months with no matching data", () => {
         const result = createMonthlyData([]);
 
         expect(result[0]).toEqual({
             month: 1,
-            quantity: 0,
-            amount: 0,
+            quantity: null,
+            amount: null,
         });
     });
 
-    it("複数月の場合、複数件返却される", () => {
+    it("maps each month's codes to the corresponding month", () => {
         const data = [
         {
             "@cat01": "00000000",
@@ -85,5 +85,9 @@ describe("createMonthlyData", () => {
             quantity: 300,
             amount: 400,
         });
+    })
+
+    it("always returns 12 months", () => {
+        expect(createMonthlyData([])).toHaveLength(12);
     })
 });

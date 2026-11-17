@@ -1,5 +1,5 @@
 import type { SingleData, MonthlyTradeData } from "@/types/estat";
-import toNumberOrZero from "@/lib/estat/toNumberOrZero";
+import toNumberOrNull from "@/lib/estat/toNumberOrNull";
 
 export default function createMonthlyData(data: SingleData[]): MonthlyTradeData[] {
     return Array.from({ length: 12}, (_, index) => {
@@ -8,13 +8,13 @@ export default function createMonthlyData(data: SingleData[]): MonthlyTradeData[
         const quantityCode = String(130 + index * 20);
         const amountCode = String(140 + index * 20);
 
-        const quantityData = toNumberOrZero(
+        const quantityData = toNumberOrNull(
             data.find(
                (item) => item["@cat02"] === quantityCode
             )?.["$"]
         );
 
-        const amountData = toNumberOrZero(
+        const amountData = toNumberOrNull(
             data.find(
                 (item) => item["@cat02"] === amountCode
             )?.["$"]
@@ -22,8 +22,8 @@ export default function createMonthlyData(data: SingleData[]): MonthlyTradeData[
 
         return {
             month,
-            quantity: Number(quantityData),
-            amount: Number(amountData),
+            quantity: quantityData,
+            amount: amountData,
         }
     })
 }

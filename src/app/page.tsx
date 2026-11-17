@@ -1,4 +1,4 @@
-import type { SearchParams, TradeResult, FetchedTradeData, TradeDataResult } from "@/types/estat";
+import type { SearchParams, TradeResult, TradeDataResult } from "@/types/estat";
 import type { SearchConditions, ParseResult, SearchOptionResult, SearchFormOptions } from "@/types/search";
 import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
