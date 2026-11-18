@@ -20,8 +20,8 @@ export default function MonthlyDetailTable({ rows, units }: MonthlyDetailTablePr
                 {rows.map((row) => (
                     <tr key={row.month}>
                         <td>{row.month}</td>
-                        <td>{row.quantity}</td>
-                        <td>{row.amount}</td>
+                        <td>{row.quantity ?? "-"}</td>
+                        <td>{row.amount ?? "-"}</td>
                     </tr>
                 ))}
             </tbody>
