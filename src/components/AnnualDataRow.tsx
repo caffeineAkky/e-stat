@@ -18,8 +18,8 @@ export default function AnnualDataRow({ data, units }: AnnualDataRowProps ) {
         <>
             <tr>
                 <td>{data.year}</td>
-                <td>{data.totalQuantity}</td>
-                <td>{data.totalAmount}</td>
+                <td>{data.totalQuantity ?? "-"}</td>
+                <td>{data.totalAmount ?? "-"}</td>
                 <td>
                     <button
                         type="button"
