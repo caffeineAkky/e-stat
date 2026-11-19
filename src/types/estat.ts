@@ -35,10 +35,13 @@ export type ExcelDownloadButtonProps = {
     rows: AnnualTradeData[];
 };
 
+// searchParams の1項目の値（同じキーが複数あれば配列、無ければ undefined）
+export type SearchParamValue = string | string[] | undefined;
+
 export type SearchParamsValues = {
-        area?: string | string[];
-        item?: string | string[];
-        year?: string | string[];
+        area?: SearchParamValue;
+        item?: SearchParamValue;
+        year?: SearchParamValue;
 }
 
 export type SearchParams = {
