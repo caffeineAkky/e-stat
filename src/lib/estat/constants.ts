@@ -156,4 +156,11 @@ export const quantityUnitLabels: Record<string, string> = {
   TNO: "千個"
 };
 
-export const defaultStatsDataId = "0003334002";
+// 初期表示は最新年の統計表を使う
+const latestYearOption: SelectedYearsOption = yearOptions.reduce(
+  (latest, option) => (option.year > latest.year ? option : latest)
+);
+
+export const latestYearSearchValue: string = latestYearOption.yearSearchValue;
+
+export const defaultStatsDataId: string = latestYearOption.tableId;

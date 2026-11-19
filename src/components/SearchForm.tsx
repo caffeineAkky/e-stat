@@ -4,6 +4,7 @@ import type {
     SearchFormOptions,
 } from "@/types/search";
 import SearchButton from "./SearchButton";
+import { latestYearSearchValue } from "@/lib/estat/constants";
 
 type SearchFormProps = {
     options: SearchFormOptions;
@@ -39,7 +40,7 @@ export default function SearchForm({
         </label>
         <label>
             年
-            <select name="year" defaultValue={conditions?.year}>
+            <select name="year" defaultValue={conditions?.year ?? latestYearSearchValue}>
                 {options.years.map((year) => (
                     <option key={year.yearSearchValue} value={year.yearSearchValue}>
                         {year.year}
