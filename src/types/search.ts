@@ -5,6 +5,13 @@ export type SearchConditions = {
     tableDataId: string;
 }
 
+// フォームの初期値。新しい統計表に無い国・品目は undefined にする
+export type SearchFormConditions = {
+    area?: string;
+    item?: string;
+    year?: string;
+}
+
 export type SelectedOption = {
     value: string;
     label: string;

@@ -1,6 +1,6 @@
 import Form from "next/form";
 import type {
-    SearchConditions,
+    SearchFormConditions,
     SearchFormOptions,
 } from "@/types/search";
 import SearchButton from "./SearchButton";
@@ -8,7 +8,7 @@ import { latestYearSearchValue } from "@/lib/estat/constants";
 
 type SearchFormProps = {
     options: SearchFormOptions;
-    conditions?: SearchConditions;
+    conditions?: SearchFormConditions;
 }
 
 export default function SearchForm({

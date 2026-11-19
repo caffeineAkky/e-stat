@@ -9,6 +9,7 @@ import aggregateTradeData from "@/lib/estat/aggregateTradeData";
 import getSearchOptions from "@/lib/estat/getSearchOptions";
 import parseSearchParams from "@/lib/estat/parseSearchParams";
 import isSelectableConditions from "@/lib/estat/isSelectableConditions";
+import pickSelectableConditions from "@/lib/estat/pickSelectableConditions";
 import { defaultStatsDataId } from "@/lib/estat/constants";
 
 export default async function Home({ searchParams }: SearchParams) {
@@ -43,7 +44,10 @@ export default async function Home({ searchParams }: SearchParams) {
   if (!isSelectableConditions(searchConditions, searchOptions)) {
     return (
       <div>
-        <SearchForm options={searchOptions}/>
+        <SearchForm
+          options={searchOptions}
+          conditions={pickSelectableConditions(searchConditions, searchOptions)}
+        />
         <p>選択肢に無い条件が指定されています</p>
       </div>
     );
