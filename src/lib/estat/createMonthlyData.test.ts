@@ -90,4 +90,33 @@ describe("createMonthlyData", () => {
     it("always returns 12 months", () => {
         expect(createMonthlyData([])).toHaveLength(12);
     })
+
+    describe("with the last published month", () => {
+        // 9月(290/300)・10月(310/320) の数量と金額。e-Stat は未公表月も "0" で返す
+        const septemberAndOctober = [
+            { "@cat01": "00000000", "@cat02": "290", "@area": "50105", "@time": "2026000000", "$": "0" },
+            { "@cat01": "00000000", "@cat02": "300", "@area": "50105", "@time": "2026000000", "@unit": "千円", "$": "0" },
+            { "@cat01": "00000000", "@cat02": "310", "@area": "50105", "@time": "2026000000", "$": "0" },
+            { "@cat01": "00000000", "@cat02": "320", "@area": "50105", "@time": "2026000000", "@unit": "千円", "$": "0" },
+        ];
+
+        it('returns null for months after the last published month even if e-Stat returns "0"', () => {
+            const result = createMonthlyData(septemberAndOctober, 9);
+
+            expect(result[9]).toEqual({ month: 10, quantity: null, amount: null });
+            expect(result[11]).toEqual({ month: 12, quantity: null, amount: null });
+        });
+
+        it("keeps a real 0 as 0 for the last published month", () => {
+            const result = createMonthlyData(septemberAndOctober, 9);
+
+            expect(result[8]).toEqual({ month: 9, quantity: 0, amount: 0 });
+        });
+
+        it("uses e-Stat values for all months when the last published month is unknown", () => {
+            const result = createMonthlyData(septemberAndOctober, null);
+
+            expect(result[9]).toEqual({ month: 10, quantity: 0, amount: 0 });
+        });
+    });
 });
