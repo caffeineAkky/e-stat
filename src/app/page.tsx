@@ -31,13 +31,13 @@ export default async function Home({ searchParams }: SearchParams) {
   const searchOptions:SearchFormOptions = searchOptionResult.data;
 
   if (parsed.status === "empty") {
-    return <SearchForm options={searchOptions}/>;
+    return <SearchForm options={searchOptions} tableId={tableId}/>;
   }
 
   if (parsed.status === "invalid") {
     return (
       <div>
-        <SearchForm options={searchOptions}/>
+        <SearchForm options={searchOptions} tableId={tableId}/>
         <p>{parsed.message}</p>
       </div>
     );
@@ -47,6 +47,7 @@ export default async function Home({ searchParams }: SearchParams) {
     return (
       <SearchForm
         options={searchOptions}
+        tableId={tableId}
         conditions={pickSelectableConditions(parsed.conditions, searchOptions)}
       />
     );
@@ -59,6 +60,7 @@ export default async function Home({ searchParams }: SearchParams) {
       <div>
         <SearchForm
           options={searchOptions}
+          tableId={tableId}
           conditions={pickSelectableConditions(searchConditions, searchOptions)}
         />
         <p>選択肢に無い条件が指定されています</p>
@@ -71,7 +73,7 @@ export default async function Home({ searchParams }: SearchParams) {
   if (tradeResult.status === "error") {
     return (
       <div>
-        <SearchForm options={searchOptions} conditions={searchConditions}/>
+        <SearchForm options={searchOptions} tableId={tableId} conditions={searchConditions}/>
         <p>{tradeResult.reason}</p>
       </div>
     );
@@ -80,7 +82,7 @@ export default async function Home({ searchParams }: SearchParams) {
   if (tradeResult.status === "empty") {
     return (
       <div>
-        <SearchForm options={searchOptions} conditions={searchConditions}/>
+        <SearchForm options={searchOptions} tableId={tableId} conditions={searchConditions}/>
         <NoResult/>
       </div>
     );
@@ -90,7 +92,7 @@ export default async function Home({ searchParams }: SearchParams) {
 
   return (
     <div>
-      <SearchForm options={searchOptions} conditions={searchConditions}/>
+      <SearchForm options={searchOptions} tableId={tableId} conditions={searchConditions}/>
       <SearchResult result={result}/>
     </div>
   );

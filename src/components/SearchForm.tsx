@@ -1,22 +1,34 @@
 import Form from "next/form";
-import type {
-    SearchFormConditions,
-    SearchFormOptions,
-} from "@/types/search";
-import SearchButton from "./SearchButton";
+import type { SearchFormConditions, SearchFormOptions } from "@/types/search";
+import SearchButton from "@/components/SearchButton";
+import YearSelect from "@/components/YearSelect";
 import { latestYearSearchValue } from "@/lib/estat/constants";
 
 type SearchFormProps = {
     options: SearchFormOptions;
+    // options（国・品目）の取得元の統計表ID
+    tableId: string;
     conditions?: SearchFormConditions;
 }
 
 export default function SearchForm({
     options,
+    tableId,
     conditions,
 }: SearchFormProps) {
     return (
-      <Form action="">
+      // select は defaultValue による非制御コンポーネントなので、
+      // 統計表が変わったらフォームごと作り直して初期値を反映させる
+      <Form action="" key={tableId}>
+        <label>
+            年
+            <YearSelect
+                years={options.years}
+                defaultValue={conditions?.year ?? latestYearSearchValue}
+                currentTableId={tableId}
+            />
+        </label>
+
         <label>
             国
             <select name="area" defaultValue={conditions?.area}>
@@ -34,16 +46,6 @@ export default function SearchForm({
                 {options.items.map((item) => (
                     <option key={item.value} value={item.value}>
                         {item.label}
-                    </option>
-                ))}
-            </select>
-        </label>
-        <label>
-            年
-            <select name="year" defaultValue={conditions?.year ?? latestYearSearchValue}>
-                {options.years.map((year) => (
-                    <option key={year.yearSearchValue} value={year.yearSearchValue}>
-                        {year.year}
                     </option>
                 ))}
             </select>
