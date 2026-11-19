@@ -12,6 +12,14 @@ export type SearchFormConditions = {
     year?: string;
 }
 
+// 年の変更時の条件。国・品目は形式が不正なら undefined
+export type ChangeYearConditions = {
+    area?: string;
+    item?: string;
+    year: string;
+    tableDataId: string;
+}
+
 export type SelectedOption = {
     value: string;
     label: string;
@@ -36,5 +44,6 @@ export type SearchOptionResult =
 export type ParseResult = 
     | { status: "empty" }
     | { status: "invalid"; message: string }
-    | { status: "ok"; conditions: SearchConditions };
+    | { status: "ok"; conditions: SearchConditions }
+    | { status: "changeYear"; conditions: ChangeYearConditions };
 

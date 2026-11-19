@@ -42,6 +42,7 @@ export type SearchParamsValues = {
         area?: SearchParamValue;
         item?: SearchParamValue;
         year?: SearchParamValue;
+        intent?: SearchParamValue;
 }
 
 export type SearchParams = {

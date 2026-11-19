@@ -16,9 +16,13 @@ export default async function Home({ searchParams }: SearchParams) {
 
   const parsed: ParseResult = await parseSearchParams(searchParams);
 
-  const searchOptionResult: SearchOptionResult = await getSearchOptions(
-    parsed.status === "ok" ? parsed.conditions.tableDataId : defaultStatsDataId
-  );
+  // 選択肢を作る統計表。フォームの年の初期値と同じ表になるようにする
+  const tableId: string =
+    parsed.status === "ok" || parsed.status === "changeYear"
+      ? parsed.conditions.tableDataId
+      : defaultStatsDataId;
+
+  const searchOptionResult: SearchOptionResult = await getSearchOptions(tableId);
 
   if (searchOptionResult.status === "error") {
     return <NoSearchOption/>;
@@ -39,6 +43,15 @@ export default async function Home({ searchParams }: SearchParams) {
     );
   }
 
+  if (parsed.status === "changeYear") {
+    return (
+      <SearchForm
+        options={searchOptions}
+        conditions={pickSelectableConditions(parsed.conditions, searchOptions)}
+      />
+    );
+  }
+
   const searchConditions: SearchConditions = parsed.conditions;
 
   if (!isSelectableConditions(searchConditions, searchOptions)) {
@@ -54,12 +67,12 @@ export default async function Home({ searchParams }: SearchParams) {
   }
 
   const tradeResult: TradeDataResult = await getTradeData(searchConditions);
-  
+
   if (tradeResult.status === "error") {
     return (
       <div>
         <SearchForm options={searchOptions} conditions={searchConditions}/>
-        <p>{tradeResult.reason}</p>        
+        <p>{tradeResult.reason}</p>
       </div>
     );
   }
@@ -72,7 +85,7 @@ export default async function Home({ searchParams }: SearchParams) {
       </div>
     );
   }
-  
+
   const result: TradeResult = aggregateTradeData(tradeResult.data);
 
   return (
