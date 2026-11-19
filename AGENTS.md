@@ -14,4 +14,5 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - 実装の前にテストだけを書いてコミットし、何を保証するテストかを説明して承認を待つ
 - 1ステップごとにコミットして止まる
 - 各ステップの最後に、変更理由をファイルごとに依存順で1行ずつ説明する
+- PRは .github/pull_request_template.md の形式で下書きし、設計判断の欄は空けておく
 - AGENTS.md の nextjs-agent-rules ブロックは next dev が管理するので触らない
