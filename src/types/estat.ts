@@ -63,6 +63,8 @@ export type FetchedTradeData = {
     country: CountryCode,
     year: number,
     units: Units,
+    // 公表済みの最終月。表タイトルから読み取れなければ null
+    lastPublishedMonth: number | null,
     values: SingleData[]
 };
 

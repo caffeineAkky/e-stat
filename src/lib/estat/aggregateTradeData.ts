@@ -16,7 +16,7 @@ export default function aggregateTradeData(fetchedTradeData: FetchedTradeData): 
         )?.["$"]
     );
 
-    const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values)
+    const monthlyData: MonthlyTradeData[] = createMonthlyData(fetchedTradeData.values, fetchedTradeData.lastPublishedMonth)
 
     const singleYearData: AnnualTradeData = {
         year: fetchedTradeData.year,

@@ -1,7 +1,8 @@
 import type { SingleData, FetchedTradeData, EstatClassObject } from "@/types/estat";
 import { quantityUnitLabels } from "./constants";
+import parseLastPublishedMonth from "@/lib/estat/parseLastPublishedMonth";
 
-export default function normalizeTradeData(fetchedDataValues: SingleData[], statisticalData: EstatClassObject[] ):FetchedTradeData  {
+export default function normalizeTradeData(fetchedDataValues: SingleData[], statisticalData: EstatClassObject[], tableTitle?: string ):FetchedTradeData  {
     // 取得データ存在チェック
     const firstValue = fetchedDataValues[0];
 
@@ -94,6 +95,7 @@ export default function normalizeTradeData(fetchedDataValues: SingleData[], stat
             },
             amount: amountLabel,
         },
+        lastPublishedMonth: parseLastPublishedMonth(tableTitle),
         values: fetchedDataValues,
     }
 }

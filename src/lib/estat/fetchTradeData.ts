@@ -56,7 +56,11 @@ export default async function fetchTradeData(searchConditions: SearchConditions)
 
     const fetchedDataValues: SingleData[] = values.DATA_INF?.VALUE ?? [];
 
-    const fetchedTradeData: FetchedTradeData  = normalizeTradeData(fetchedDataValues, statisticalData);
+    // TITLE は表番号があると { "@no", "$" } の形で返る
+    const rawTitle = values.TABLE_INF?.TITLE;
+    const tableTitle: string | undefined = typeof rawTitle === "string" ? rawTitle : rawTitle?.["$"];
+
+    const fetchedTradeData: FetchedTradeData  = normalizeTradeData(fetchedDataValues, statisticalData, tableTitle);
 
     return fetchedTradeData;
 }
