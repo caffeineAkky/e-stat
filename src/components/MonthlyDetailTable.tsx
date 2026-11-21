@@ -2,8 +2,10 @@ import type { MonthlyTradeData, Units } from "@/types/estat"
 import formatNumber from "@/lib/estat/formatNumber"
 import toUnitSuffix from "@/lib/estat/toUnitSuffix"
 
-const headerCellClassName = "border border-foreground/20 bg-foreground/5 px-3 py-1.5 font-bold";
-const cellClassName = "border border-foreground/20 px-3 py-1.5";
+// 月の行は横に読むものなので、縦罫線は横罫線より薄くして行のまとまりを見せる
+const lineClassName = "border border-line border-x-line/50";
+const headerCellClassName = `${lineClassName} bg-th px-3 py-1.5 font-bold`;
+const cellClassName = `${lineClassName} px-3 py-1.5`;
 // 数値は桁をそろえて比べやすくするため、右寄せにして数字の幅を等幅にする
 const numberCellClassName = `${cellClassName} text-right tabular-nums`;
 
@@ -32,7 +34,8 @@ export default function MonthlyDetailTable({ rows, units }: MonthlyDetailTablePr
 
             <tbody>
                 {rows.map((row) => (
-                    <tr key={row.month}>
+                    // 行を目で追いやすいよう、偶数行だけ背景色を変える
+                    <tr key={row.month} className="bg-surface even:bg-zebra">
                         <td className={cellClassName}>{row.month}</td>
                         <td className={numberCellClassName}>{formatNumber(row.quantity)}</td>
                         <td className={numberCellClassName}>{formatNumber(row.amount)}</td>

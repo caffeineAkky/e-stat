@@ -10,9 +10,10 @@ const labelClassName = "flex flex-col gap-1";
 const labelTextClassName = "text-sm font-bold";
 // 品目名は長いので、列の幅を超えたら select の中で切れるように min-w-0 を付ける。
 // ブラウザ標準の select は line-height が効かず padding だけでは高さが決まらないので、
-// 高さは h-10 で明示して検索ボタンと揃える
+// 高さは h-10 で明示して検索ボタンと揃える。
+// 枠線は表の罫線（line）より濃い fg-sub/70 にして、入力欄の境界を 3:1 以上で見分けられるようにする
 const selectClassName =
-    "h-10 w-full min-w-0 rounded-md border border-foreground/30 bg-background px-3 text-foreground";
+    "h-10 w-full min-w-0 rounded-md border border-fg-sub/70 bg-surface px-3 text-fg";
 
 type SearchFormProps = {
     options: SearchFormOptions;

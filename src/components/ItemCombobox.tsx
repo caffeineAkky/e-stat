@@ -124,7 +124,7 @@ export default function ItemCombobox({ label, items, defaultValue }: ItemCombobo
                     }}
                     onBlur={close}
                     onKeyDown={handleKeyDown}
-                    className="h-10 w-full min-w-0 rounded-md border border-foreground/30 bg-background px-3 text-foreground"
+                    className="h-10 w-full min-w-0 rounded-md border border-fg-sub/70 bg-surface px-3 text-fg"
                 />
 
                 <input type="hidden" name="item" value={selected?.value ?? ""} />
@@ -135,10 +135,10 @@ export default function ItemCombobox({ label, items, defaultValue }: ItemCombobo
                         id={listboxId}
                         role="listbox"
                         aria-label={label}
-                        className="absolute z-10 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-foreground/30 bg-background py-1 shadow-lg"
+                        className="absolute z-10 mt-1 max-h-72 w-full overflow-y-auto rounded-md border border-line bg-surface py-1 shadow-lg"
                     >
                         {candidates.length === 0 ? (
-                            <li className="px-3 py-2 text-sm text-foreground/60">該当する品目がありません</li>
+                            <li className="px-3 py-2 text-sm text-fg-sub">該当する品目がありません</li>
                         ) : (
                             candidates.map((item, index) => (
                                 <li
@@ -150,7 +150,8 @@ export default function ItemCombobox({ label, items, defaultValue }: ItemCombobo
                                     onMouseDown={(e) => e.preventDefault()}
                                     onClick={() => choose(item)}
                                     onMouseEnter={() => setActiveIndex(index)}
-                                    className={`cursor-pointer px-3 py-2 ${index === activeIndex ? "bg-foreground/10" : ""} ${item.value === selected?.value ? "font-bold" : ""}`}
+                                    // カーソルが当たっている候補は表ヘッダーと同じ色で示す。強調色（accent）は使わない
+                                    className={`cursor-pointer px-3 py-2 ${index === activeIndex ? "bg-th" : ""} ${item.value === selected?.value ? "font-bold" : ""}`}
                                 >
                                     {item.label}
                                 </li>

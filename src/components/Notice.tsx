@@ -10,14 +10,16 @@ type NoticeProps = {
 
 // 色だけでは見分けられない人もいるので、アイコンの形（！と i）でも種類が分かるようにする
 const styles: Record<NoticeVariant, { box: string; icon: string; symbol: string }> = {
+    // ライト・ダークの切り替えは globals.css のトークン側で行う
     error: {
-        box: "border-red-600/40 bg-red-50 text-red-900 dark:border-red-400/40 dark:bg-red-950/40 dark:text-red-100",
-        icon: "bg-red-600 text-white dark:bg-red-400 dark:text-red-950",
+        box: "border-danger/40 bg-danger-soft text-on-danger-soft",
+        icon: "bg-danger text-on-danger",
         symbol: "!",
     },
+    // 0件などのお知らせは強調せず、表や入力欄と同じ面の色にする
     info: {
-        box: "border-sky-600/40 bg-sky-50 text-sky-900 dark:border-sky-400/40 dark:bg-sky-950/40 dark:text-sky-100",
-        icon: "bg-sky-600 text-white dark:bg-sky-400 dark:text-sky-950",
+        box: "border-line bg-surface text-fg",
+        icon: "bg-fg-sub text-surface",
         symbol: "i",
     },
 }

@@ -4,7 +4,7 @@ import toUnitSuffix from "@/lib/estat/toUnitSuffix"
 import ExcelDownloadButton from "./ExcelDownloadButton"
 import AnnualDataRow from "./AnnualDataRow"
 
-const headerCellClassName = "border border-foreground/20 bg-foreground/5 px-3 py-2 font-bold";
+const headerCellClassName = "border border-line bg-th px-3 py-2 font-bold";
 
 type SearchResultProps = {
     result: TradeResult

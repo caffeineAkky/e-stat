@@ -27,9 +27,11 @@ export default function ExcelDownloadButton({ result }: ExcelDownloadButtonProps
         <button
             type="button"
             onClick={handleDownload}
-            // 主な操作である「検索」と競わないよう、塗りつぶさず枠線だけの控えめな見た目にする。
-            // 高さと角丸は検索ボタンに揃える。見出しが長くても潰れないよう縮ませない
-            className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-md border border-foreground/40 px-4 font-bold hover:bg-foreground/10 focus-visible:outline-2 focus-visible:outline-offset-2"
+            // 主な操作である「検索」と競わないよう、塗りつぶさず accent の枠線と文字だけの控えめな見た目にする。
+            // ホバーの背景を accent-soft にするとライトで文字が 4.5:1 を割るので、表と同じ surface にする。
+            // 高さと角丸は検索ボタンに揃える。見出しが長くても潰れないよう縮ませない。
+            // フォーカスリングは globals.css でまとめて指定している
+            className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-md border border-accent px-4 font-bold text-accent hover:bg-surface"
         >
             {/* アイコンは flex の子にせず、文言と同じ span の中にインラインで置く。
                 flex の先頭がアイコンだとボタンのベースラインがアイコンの下端になり、
