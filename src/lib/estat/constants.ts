@@ -148,7 +148,7 @@ export const quantityUnitLabels: Record<string, string> = {
   M : "メートル",
   MNO: "百万個",
   MT: "トン",
-  NO: "個、本、枚、頭、羽、匹、台、両、機、隻、着",
+  NO: "個数",
   PR: "足、対",
   SM: "平方メートル",
   ST: "組",

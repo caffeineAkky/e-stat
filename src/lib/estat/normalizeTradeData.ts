@@ -1,6 +1,6 @@
 import type { SingleData, FetchedTradeData, EstatClassObject } from "@/types/estat";
-import { quantityUnitLabels } from "./constants";
 import parseLastPublishedMonth from "@/lib/estat/parseLastPublishedMonth";
+import toQuantityUnitLabel from "@/lib/estat/toQuantityUnitLabel";
 
 export default function normalizeTradeData(fetchedDataValues: SingleData[], statisticalData: EstatClassObject[], tableTitle?: string ):FetchedTradeData  {
     // 取得データ存在チェック
@@ -68,11 +68,7 @@ export default function normalizeTradeData(fetchedDataValues: SingleData[], stat
         (item) => item["@cat02"] === "100"
     )?.["$"];
 
-    const normalizedQuantityLabel = quantityCode?.normalize("NFKC").trim();
-
-    const quantityLabel = normalizedQuantityLabel
-    ? quantityUnitLabels[normalizedQuantityLabel] ?? normalizedQuantityLabel
-    : undefined;
+    const quantityLabel = toQuantityUnitLabel(quantityCode);
 
     const amountLabel = fetchedDataValues.find(
         (item) => item["@cat02"] === "120"
