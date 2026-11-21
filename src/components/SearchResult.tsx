@@ -17,10 +17,17 @@ export default function SearchResult({
 
     return (
         <section className="mt-8 flex flex-col gap-4">
-            {/* どの条件の表か分かるように、年・国・品目を見出しにする。長い品目名は折り返す */}
-            <h2 className="text-lg font-bold break-words">
-                {year}年 ／ {removeCodePrefix(result.country.name)} ／ {removeCodePrefix(result.item.name)}
-            </h2>
+            {/* ダウンロードボタンを見出しと同じ行に置き、「この条件の表を落とす」ことが分かるようにする。
+                表の下に置くと、月別詳細を開いたときにボタンが押し出されて動いてしまう。
+                スマホ幅ではボタンを見出しの下に回す */}
+            <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                {/* どの条件の表か分かるように、年・国・品目を見出しにする。
+                    長い品目名は見出しの中で折り返し、ボタンを押し出さない */}
+                <h2 className="min-w-0 text-lg font-bold break-words">
+                    {year}年 ／ {removeCodePrefix(result.country.name)} ／ {removeCodePrefix(result.item.name)}
+                </h2>
+                <ExcelDownloadButton result={result} />
+            </div>
 
             {/* スマホ幅で表が収まらないときは、ページ全体ではなく表だけを横にスクロールさせる */}
             <div className="overflow-x-auto">
@@ -43,10 +50,6 @@ export default function SearchResult({
                         ))}
                     </tbody>
                 </table>
-            </div>
-
-            <div>
-                <ExcelDownloadButton result={result} />
             </div>
         </section>
     )
