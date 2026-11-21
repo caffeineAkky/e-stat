@@ -1,5 +1,6 @@
 import type { TradeResult } from "@/types/estat"
 import removeCodePrefix from "@/lib/estat/removeCodePrefix"
+import toUnitSuffix from "@/lib/estat/toUnitSuffix"
 import ExcelDownloadButton from "./ExcelDownloadButton"
 import AnnualDataRow from "./AnnualDataRow"
 
@@ -43,7 +44,7 @@ export default function SearchResult({
                     <thead>
                     <tr>
                         <th className={`${headerCellClassName} text-left`}>年</th>
-                        <th className={`${headerCellClassName} text-right`}>数量({result.units.quantity.label})</th>
+                        <th className={`${headerCellClassName} text-right`}>数量{toUnitSuffix(result.units.quantity.label)}</th>
                         <th className={`${headerCellClassName} text-right`}>金額({result.units.amount})</th>
                     </tr>
                     </thead>
