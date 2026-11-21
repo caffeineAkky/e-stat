@@ -12,6 +12,10 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+      # .next はホストの next dev / next build と共有すると、Turbopack のキャッシュが混ざって
+      # 古いビルド結果が配信されるので、コンテナ専用のボリュームに切り離す
+      - next_dev:/app/.next
 
 volumes:
   node_modules:
+  next_dev:
