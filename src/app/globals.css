@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* select の選択肢などブラウザ標準の部品も、OS のライト・ダークに合わせて描かせる */
+  color-scheme: light dark;
 }
 
 @theme inline {
