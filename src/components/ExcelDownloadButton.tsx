@@ -3,6 +3,7 @@
 import { utils, writeFileXLSX } from "xlsx";
 import type { ExcelDownloadButtonProps } from "@/types/estat";
 import createExportRows from "@/lib/estat/createExportRows";
+import createExportFileName from "@/lib/estat/createExportFileName";
 
 export default function ExcelDownloadButton({ result }: ExcelDownloadButtonProps) {
     const handleDownload = () => {
@@ -19,7 +20,7 @@ export default function ExcelDownloadButton({ result }: ExcelDownloadButtonProps
         utils.book_append_sheet(workbook, worksheet, "貿易統計");
 
         // Excelファイルとしてダウンロードする
-        writeFileXLSX(workbook, "trade-data.xlsx");
+        writeFileXLSX(workbook, createExportFileName(result));
     };
 
     return (

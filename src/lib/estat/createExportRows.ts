@@ -1,9 +1,5 @@
 import type { ExportRow, TradeResult } from "@/types/estat";
-
-// e-Stat の名前は「105_中華人民共和国」のように先頭にコードが付くので取り除く。付いていなければそのまま返す
-function removeCodePrefix(name: string): string {
-    return name.replace(/^[0-9A-Za-z]+_/, "");
-}
+import removeCodePrefix from "@/lib/estat/removeCodePrefix";
 
 // 値が無いセルは null にする（SheetJS は null のセルを作らないので、Excel 上で空白になる）
 export default function createExportRows(result: TradeResult): ExportRow[] {
