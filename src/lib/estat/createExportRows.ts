@@ -28,11 +28,10 @@ export default function createExportRows(result: TradeResult): ExportRow[] {
         金額単位: amount == null ? null : units.amount ?? null,
     });
 
-    return result.annualData.flatMap((annual) => [
-        // 年計は月 0 として出力する
-        toRow(annual.year, 0, annual.totalQuantity, annual.totalAmount),
-        ...annual.monthlyData.map((monthly) =>
+    // 年計の行は出さない（Excel で SUM やピボットをかけたときに二重に数えられるため）
+    return result.annualData.flatMap((annual) =>
+        annual.monthlyData.map((monthly) =>
             toRow(annual.year, monthly.month, monthly.quantity, monthly.amount),
         ),
-    ]);
+    );
 }
