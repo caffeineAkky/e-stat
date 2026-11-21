@@ -31,8 +31,22 @@ export type TradeResult = {
     annualData: AnnualTradeData[];
 }
 
+// Excel に出力する1行。キーの並びがそのまま列の並びになる
+export type ExportRow = {
+    年: number;
+    月: number;
+    品目コード: string;
+    品目名: string;
+    国コード: string;
+    国名: string;
+    数量: number | null;
+    数量単位: string | null;
+    金額: number | null;
+    金額単位: string | null;
+};
+
 export type ExcelDownloadButtonProps = {
-    rows: AnnualTradeData[];
+    result: TradeResult;
 };
 
 // searchParams の1項目の値（同じキーが複数あれば配列、無ければ undefined）

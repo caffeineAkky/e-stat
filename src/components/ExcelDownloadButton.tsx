@@ -2,24 +2,12 @@
 
 import { utils, writeFileXLSX } from "xlsx";
 import type { ExcelDownloadButtonProps } from "@/types/estat";
+import createExportRows from "@/lib/estat/createExportRows";
 
-export default function ExcelDownloadButton({ rows }: ExcelDownloadButtonProps) {
+export default function ExcelDownloadButton({ result }: ExcelDownloadButtonProps) {
     const handleDownload = () => {
 
-        const exportRows = rows.flatMap((row) => [
-            {
-                年: row.year,
-                月: 0,
-                数量: row.totalQuantity,
-                金額: row.totalAmount,
-            },
-            ...row.monthlyData.map((monthly) => ({
-                年: row.year,
-                月: monthly.month,
-                数量: monthly.quantity,
-                金額: monthly.amount,
-            }))
-        ]);
+        const exportRows = createExportRows(result);
 
         // 配列データからワークシートを作る
         const worksheet = utils.json_to_sheet(exportRows);

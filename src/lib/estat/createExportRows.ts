@@ -1,0 +1,38 @@
+import type { ExportRow, TradeResult } from "@/types/estat";
+
+// e-Stat の名前は「105_中華人民共和国」のように先頭にコードが付くので取り除く。付いていなければそのまま返す
+function removeCodePrefix(name: string): string {
+    return name.replace(/^[0-9A-Za-z]+_/, "");
+}
+
+// 値が無いセルは null にする（SheetJS は null のセルを作らないので、Excel 上で空白になる）
+export default function createExportRows(result: TradeResult): ExportRow[] {
+    const { item, country, units } = result;
+
+    const toRow = (
+        year: number,
+        month: number,
+        quantity: number | null | undefined,
+        amount: number | null | undefined,
+    ): ExportRow => ({
+        年: year,
+        月: month,
+        品目コード: item.code,
+        品目名: removeCodePrefix(item.name),
+        国コード: country.code,
+        国名: removeCodePrefix(country.name),
+        数量: quantity ?? null,
+        // 値が空のセルには単位も出さない
+        数量単位: quantity == null ? null : units.quantity.label ?? null,
+        金額: amount ?? null,
+        金額単位: amount == null ? null : units.amount ?? null,
+    });
+
+    return result.annualData.flatMap((annual) => [
+        // 年計は月 0 として出力する
+        toRow(annual.year, 0, annual.totalQuantity, annual.totalAmount),
+        ...annual.monthlyData.map((monthly) =>
+            toRow(annual.year, monthly.month, monthly.quantity, monthly.amount),
+        ),
+    ]);
+}
