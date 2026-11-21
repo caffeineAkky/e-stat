@@ -4,6 +4,7 @@ import SearchForm from "@/components/SearchForm";
 import SearchResult from "@/components/SearchResult";
 import NoResult from "@/components/NoResult";
 import NoSearchOption from "@/components/NoSearchOption";
+import Notice from "@/components/Notice";
 import getTradeData from "@/lib/estat/getTradeData";
 import aggregateTradeData from "@/lib/estat/aggregateTradeData";
 import getSearchOptions from "@/lib/estat/getSearchOptions";
@@ -38,7 +39,7 @@ export default async function Home({ searchParams }: SearchParams) {
     return (
       <div>
         <SearchForm options={searchOptions} tableId={tableId}/>
-        <p>{parsed.message}</p>
+        <Notice variant="error" title={parsed.message}/>
       </div>
     );
   }
@@ -63,7 +64,7 @@ export default async function Home({ searchParams }: SearchParams) {
           tableId={tableId}
           conditions={pickSelectableConditions(searchConditions, searchOptions)}
         />
-        <p>選択肢に無い条件が指定されています</p>
+        <Notice variant="error" title="選択肢に無い条件が指定されています"/>
       </div>
     );
   }
@@ -74,7 +75,7 @@ export default async function Home({ searchParams }: SearchParams) {
     return (
       <div>
         <SearchForm options={searchOptions} tableId={tableId} conditions={searchConditions}/>
-        <p>{tradeResult.reason}</p>
+        <Notice variant="error" title={tradeResult.reason}/>
       </div>
     );
   }

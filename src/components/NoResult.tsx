@@ -1,7 +1,5 @@
+import Notice from "./Notice"
+
 export default function NoResult() {
-  return (
-    <div>
-      <p>取得結果がありませんでした。</p>
-    </div>
-  )
+  return <Notice variant="info" title="取得結果がありませんでした。" />
 }
