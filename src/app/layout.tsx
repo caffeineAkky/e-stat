@@ -29,7 +29,17 @@ export default function RootLayout({
       className={`${bizUDPGothic.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <main className="flex-1">{children}</main>
+        <header className="border-b border-foreground/15">
+          <div className="mx-auto max-w-4xl px-4 py-5">
+            <h1 className="text-xl font-bold">e-Stat 貿易統計ナビ</h1>
+            <p className="mt-1 text-sm text-foreground/70">
+              年・国・品目を選んで、貿易統計を表で確認できます。
+              <br />
+              また、表の内容を Excel でダウンロードすることもできます。
+            </p>
+          </div>
+        </header>
+        <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-6">{children}</main>
         <footer className="border-t px-4 py-3 text-center text-xs text-gray-500">
           このサービスは、政府統計総合窓口(e-Stat)のAPI機能を使用していますが、サービスの内容は国によって保証されたものではありません。
         </footer>

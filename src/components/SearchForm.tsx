@@ -5,6 +5,14 @@ import SearchButton from "@/components/SearchButton";
 import YearSelect from "@/components/YearSelect";
 import { latestYearSearchValue } from "@/lib/estat/constants";
 
+const labelClassName = "flex flex-col gap-1";
+const labelTextClassName = "text-sm font-bold";
+// 品目名は長いので、列の幅を超えたら select の中で切れるように min-w-0 を付ける。
+// ブラウザ標準の select は line-height が効かず padding だけでは高さが決まらないので、
+// 高さは h-10 で明示して検索ボタンと揃える
+const selectClassName =
+    "h-10 w-full min-w-0 rounded-md border border-foreground/30 bg-background px-3 text-foreground";
+
 type SearchFormProps = {
     options: SearchFormOptions;
     // options（国・品目）の取得元の統計表ID
@@ -24,10 +32,13 @@ export default function SearchForm({
 
     return (
       // 文字列 action の <Form> に key を渡すのはサポート外なので、key は内側に付ける
-      <Form action="">
+      <Form
+        action=""
+        className="grid gap-4 sm:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
+      >
         <Fragment key={selectsKey}>
-          <label>
-              年
+          <label className={labelClassName}>
+              <span className={labelTextClassName}>年</span>
               <YearSelect
                   years={options.years}
                   defaultValue={conditions?.year ?? latestYearSearchValue}
@@ -35,9 +46,9 @@ export default function SearchForm({
               />
           </label>
 
-          <label>
-              国
-              <select name="area" defaultValue={conditions?.area}>
+          <label className={labelClassName}>
+              <span className={labelTextClassName}>国</span>
+              <select name="area" defaultValue={conditions?.area} className={selectClassName}>
                   {options.areas.map((area) => (
                       <option key={area.value} value={area.value}>
                           {area.label}
@@ -46,9 +57,9 @@ export default function SearchForm({
               </select>
           </label>
 
-          <label>
-              品目
-              <select name="item" defaultValue={conditions?.item}>
+          <label className={labelClassName}>
+              <span className={labelTextClassName}>品目</span>
+              <select name="item" defaultValue={conditions?.item} className={selectClassName}>
                   {options.items.map((item) => (
                       <option key={item.value} value={item.value}>
                           {item.label}
