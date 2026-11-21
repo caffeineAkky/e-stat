@@ -1,5 +1,6 @@
 import type { MonthlyTradeData, Units } from "@/types/estat"
 import formatNumber from "@/lib/estat/formatNumber"
+import toUnitSuffix from "@/lib/estat/toUnitSuffix"
 
 const headerCellClassName = "border border-foreground/20 bg-foreground/5 px-3 py-1.5 font-bold";
 const cellClassName = "border border-foreground/20 px-3 py-1.5";
@@ -24,7 +25,7 @@ export default function MonthlyDetailTable({ rows, units }: MonthlyDetailTablePr
             <thead>
                 <tr>
                     <th className={`${headerCellClassName} text-left`}>月</th>
-                    <th className={`${headerCellClassName} text-right`}>数量({units.quantity.label})</th>
+                    <th className={`${headerCellClassName} text-right`}>数量{toUnitSuffix(units.quantity.label)}</th>
                     <th className={`${headerCellClassName} text-right`}>金額({units.amount})</th>
                 </tr>
             </thead>
