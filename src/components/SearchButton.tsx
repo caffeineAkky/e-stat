@@ -9,9 +9,9 @@ export default function SearchButton() {
         <button
             type="submit"
             disabled={isSearching}
-            // 前景色と背景色を反転させて、ライト・ダークのどちらでも目立たせる。
+            // 主な操作なので強調色（accent）で塗りつぶして目立たせる。
             // 高さは select と同じ h-10 で揃える
-            className="grid h-10 place-items-center whitespace-nowrap rounded-md border border-foreground bg-foreground px-6 font-bold text-background hover:bg-foreground/85 disabled:cursor-wait disabled:opacity-50"
+            className="grid h-10 place-items-center whitespace-nowrap rounded-md border border-accent bg-accent px-6 font-bold text-on-accent hover:border-accent-hover hover:bg-accent-hover disabled:cursor-wait disabled:opacity-50"
         >
             {/* 2つの文言を同じセルに重ね、長い方の幅を常に確保する。
                 文言が切り替わってもボタンの幅が変わらず、隣の select が動かない。

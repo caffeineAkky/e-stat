@@ -1,27 +1,94 @@
 @import "tailwindcss";
 
+/* 色はすべてここで決める。部品側は bg-surface / text-fg-sub のようにトークン名だけで指定する。
+   ライトとダークは OS（ブラウザ）の設定に合わせて prefers-color-scheme で切り替える。
+   on-* は「その色の上に載せる文字色」。背景色と組で決めておき、コントラスト（WCAG AA 4.5:1 以上）を保つ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #F5F7FA;          /* ページ背景 */
+  --surface: #FFFFFF;     /* テーブル・入力欄 */
+  --header: #1E3A5F;      /* 上部の帯 */
+  --on-header: #FFFFFF;
+  --header-border: transparent;
+  --th-bg: #F1F5F9;       /* 表ヘッダー */
+  --border: #E2E8F0;
+  --text: #1F2937;
+  --text-sub: #475569;
+  /* 強調色は検索ボタン・合計行・フォーカスリングにだけ使う */
+  --accent: #1D6FD8;
+  --on-accent: #FFFFFF;
+  /* ホバー時の色。半透明にすると白文字のコントラストが 4.5:1 を割るので、別の色として持つ */
+  --accent-hover: #185FBD;
+  --accent-soft: #E8F1FD; /* 合計行の背景 */
+  --on-accent-soft: #0C447C;
+  --zebra: #FAFBFC;       /* 月の行の偶数行 */
+  /* エラー表示 */
+  --danger: #DC2626;
+  --on-danger: #FFFFFF;
+  --danger-soft: #FEF2F2;
+  --on-danger-soft: #991B1B;
   /* select の選択肢などブラウザ標準の部品も、OS のライト・ダークに合わせて描かせる */
   color-scheme: light dark;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0F172A;
+    --surface: #1E293B;
+    --header: #0F172A;
+    --on-header: #E2E8F0;
+    /* 帯とページ背景が同じ色なので、境界線で区切る */
+    --header-border: #334155;
+    --th-bg: #273449;
+    --border: #334155;
+    --text: #E2E8F0;
+    --text-sub: #94A3B8;
+    --accent: #F59E0B;
+    --on-accent: #1C1917;
+    --accent-hover: #FBBF24;
+    --accent-soft: #2B2616;
+    --on-accent-soft: #FCD34D;
+    --zebra: #212D40;
+    --danger: #F87171;
+    --on-danger: #1C1917;
+    --danger-soft: #2A1215;
+    --on-danger-soft: #FECACA;
+  }
+}
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-header: var(--header);
+  --color-on-header: var(--on-header);
+  --color-header-border: var(--header-border);
+  --color-th: var(--th-bg);
+  --color-line: var(--border);
+  --color-fg: var(--text);
+  --color-fg-sub: var(--text-sub);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent-soft: var(--on-accent-soft);
+  --color-zebra: var(--zebra);
+  --color-danger: var(--danger);
+  --color-on-danger: var(--on-danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-on-danger-soft: var(--on-danger-soft);
   --font-sans: var(--font-biz-udp-gothic);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+@layer base {
+  /* フォーカスリングは部品ごとに指定せず、ここで accent にそろえる。
+     部品側で outline の指定があれば utilities が優先される */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 }

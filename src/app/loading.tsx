@@ -5,9 +5,10 @@
 // 形は SearchForm と SearchResult のクラスに合わせている
 
 // 動きを減らす設定の人には点滅させない
-const barClassName = "rounded-md bg-foreground/10 motion-safe:animate-pulse";
-const headerCellClassName = "border border-foreground/20 bg-foreground/5 px-3 py-2";
-const cellClassName = "border border-foreground/20 px-3 py-2";
+// 形を示すだけのバーなので、罫線と同じ色で薄く描く
+const barClassName = "rounded-md bg-line motion-safe:animate-pulse";
+const headerCellClassName = "border border-line bg-th px-3 py-2";
+const cellClassName = "border border-line bg-surface px-3 py-2";
 
 function FieldSkeleton({ labelWidth, fieldClassName }: { labelWidth: string; fieldClassName: string }) {
     return (
