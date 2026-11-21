@@ -13,7 +13,14 @@ type MonthlyDetailTableProps = {
 
 export default function MonthlyDetailTable({ rows, units }: MonthlyDetailTableProps ) {
     return (
-        <table className="w-full border-collapse text-sm">
+        // 年別の表と同じ割合で列幅を固定し、品目によって表の形が変わらないようにする
+        <table className="w-full table-fixed border-collapse text-sm">
+            {/* 月 20%・数量 40%・金額 40%。年別の表と同じ割合にしている */}
+            <colgroup>
+                <col className="w-1/5" />
+                <col className="w-2/5" />
+                <col className="w-2/5" />
+            </colgroup>
             <thead>
                 <tr>
                     <th className={`${headerCellClassName} text-left`}>月</th>

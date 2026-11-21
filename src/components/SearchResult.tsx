@@ -31,7 +31,15 @@ export default function SearchResult({
 
             {/* スマホ幅で表が収まらないときは、ページ全体ではなく表だけを横にスクロールさせる */}
             <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+                {/* 列幅を中身の長さで決めると、品目（数量の桁数や単位の有無）によって表の形が変わるので、割合で固定する。
+                    スマホ幅で数値が窮屈にならないよう最小幅を付け、収まらない分は横スクロールに任せる */}
+                <table className="w-full min-w-[32rem] table-fixed border-collapse">
+                    {/* 年 20%・数量 40%・金額 40%。月別詳細の表も同じ割合にしている */}
+                    <colgroup>
+                        <col className="w-1/5" />
+                        <col className="w-2/5" />
+                        <col className="w-2/5" />
+                    </colgroup>
                     <thead>
                     <tr>
                         <th className={`${headerCellClassName} text-left`}>年</th>
