@@ -39,7 +39,7 @@ export default function SearchResult({
                 </tbody>
             </table>
 
-            <ExcelDownloadButton rows={result.annualData} />
+            <ExcelDownloadButton result={result} />
         </div>
 
     )
