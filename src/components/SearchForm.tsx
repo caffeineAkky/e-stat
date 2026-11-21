@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import type { SearchFormConditions, SearchFormOptions } from "@/types/search";
 import SearchButton from "@/components/SearchButton";
 import YearSelect from "@/components/YearSelect";
+import ItemCombobox from "@/components/ItemCombobox";
 import { latestYearSearchValue } from "@/lib/estat/constants";
 
 const labelClassName = "flex flex-col gap-1";
@@ -57,16 +58,8 @@ export default function SearchForm({
               </select>
           </label>
 
-          <label className={labelClassName}>
-              <span className={labelTextClassName}>品目</span>
-              <select name="item" defaultValue={conditions?.item} className={selectClassName}>
-                  {options.items.map((item) => (
-                      <option key={item.value} value={item.value}>
-                          {item.label}
-                      </option>
-                  ))}
-              </select>
-          </label>
+          {/* 候補リストの文字がアクセシブルネームに入らないよう、ラベルはコンボボックス側で持つ */}
+          <ItemCombobox label="品目" items={options.items} defaultValue={conditions?.item} />
         </Fragment>
 
         <SearchButton />
