@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { BIZ_UDPGothic, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -43,6 +44,7 @@ export default function RootLayout({
         <footer className="border-t border-line px-4 py-3 text-center text-xs text-fg-sub">
           このサービスは、政府統計総合窓口(e-Stat)のAPI機能を使用していますが、サービスの内容は国によって保証されたものではありません。
         </footer>
+        <Analytics />
       </body>
     </html>
   );
